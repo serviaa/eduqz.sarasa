@@ -58,6 +58,10 @@ export default function QuizPage({ questions, category }) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-100 to-white flex items-center justify-center p-6">
       <div className="bg-white rounded-2xl shadow-xl p-8 max-w-2xl w-full border border-pink-200 relative">
+        {/* Category Title */}
+        <h1 className="text-3xl font-bold text-pink-600 mb-4 text-center flex items-center justify-center gap-2">
+          {category.replace('-', ' ').toUpperCase()} <span>📝</span>
+        </h1>
         {/* Progress & Timer */}
         {!showScore && (
           <>
@@ -77,10 +81,6 @@ export default function QuizPage({ questions, category }) {
             </div>
           </>
         )}
-
-        <h1 className="text-3xl font-bold text-pink-600 mb-6 text-center flex items-center justify-center gap-2">
-          {category.replace('-', ' ').toUpperCase()} <span>📝</span>
-        </h1>
 
         {showScore ? (
           <div className="text-center">
