@@ -5,15 +5,15 @@ import Image from 'next/image';
 const categories = [
   {
     key: 'matematika',
-    img: '/images/matematika.png', // Simpan gambar di public/images/
+    img: '/images/matematika.jpg', // Simpan gambar di public/images/
   },
   {
     key: 'english',
-    img: '/images/bahasa-indonesia.png',
+    img: '/images/english.jpeg',
   },
   {
     key: 'ipa',
-    img: '/images/english.png',
+    img: '/images/english.jpg',
   },
 ];
 
