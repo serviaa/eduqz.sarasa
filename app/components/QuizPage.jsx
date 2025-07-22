@@ -52,20 +52,30 @@ export default function QuizPage({ questions, category }) {
     return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
   };
 
+  // Progress bar calculation
+  const progressPercent = Math.round(((currentQuestion + (showScore ? 1 : 0)) / questions.length) * 100);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-100 to-white flex items-center justify-center p-6">
       <div className="bg-white rounded-2xl shadow-xl p-8 max-w-2xl w-full border border-pink-200 relative">
         {/* Progress & Timer */}
         {!showScore && (
-          <div className="flex justify-between items-center mb-6">
-            <div className="flex flex-col items-start">
-              <span className="text-pink-600 font-bold">Soal Terjawab: {currentQuestion}/{questions.length}</span>
+          <>
+            <div className="flex justify-between items-center mb-4">
+              <span className="text-pink-600 font-bold">⏱️ Waktu: {formatTime(elapsed)}</span>
               <span className="text-pink-600 font-bold">Skor: {score}</span>
             </div>
-            <div className="flex flex-col items-end">
-              <span className="text-pink-600 font-bold">⏱️ Waktu: {formatTime(elapsed)}</span>
+            {/* Progress Bar */}
+            <div className="w-full h-4 bg-pink-100 rounded-full mb-2 overflow-hidden">
+              <div
+                className="h-4 bg-gradient-to-r from-pink-400 to-pink-600 rounded-full transition-all duration-500"
+                style={{ width: `${progressPercent}%` }}
+              ></div>
             </div>
-          </div>
+            <div className="text-center text-pink-700 font-semibold mb-6">
+              {currentQuestion + 1} / {questions.length} Soal
+            </div>
+          </>
         )}
 
         <h1 className="text-3xl font-bold text-pink-600 mb-6 text-center flex items-center justify-center gap-2">
@@ -99,10 +109,19 @@ export default function QuizPage({ questions, category }) {
                 {questions[currentQuestion].options.map((opt, i) => (
                   <label
                     key={i}
-                    className={`block p-4 border rounded-xl cursor-pointer transition-all ${
-                      selectedAnswer === opt ? 'bg-pink-100 border-pink-400 scale-105' : 'border-pink-200'
-                    }`}
+                    className={`flex items-center gap-3 p-4 border rounded-full cursor-pointer transition-all
+                      ${selectedAnswer === opt ? 'bg-pink-100 border-pink-400 scale-105' : 'border-pink-200'}
+                      hover:bg-pink-50 hover:border-pink-300`}
                   >
+                    <span
+                      className={`w-6 h-6 flex items-center justify-center rounded-full border-2
+                        ${selectedAnswer === opt ? 'border-pink-500 bg-pink-400' : 'border-pink-300 bg-white'}
+                        transition-all`}
+                    >
+                      {selectedAnswer === opt && (
+                        <span className="w-3 h-3 bg-white rounded-full block"></span>
+                      )}
+                    </span>
                     <input
                       type="radio"
                       name="answer"
