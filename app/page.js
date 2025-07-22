@@ -13,7 +13,7 @@ const categories = [
   },
   {
     key: 'ipa',
-    img: '/images/english.jpg',
+    img: '/images/ipa.jpg',
   },
 ];
 
@@ -46,8 +46,7 @@ export default function HomePage() {
       <div className="bg-pink-50 border border-pink-200 rounded-xl p-4 shadow text-center max-w-xl mx-auto">
         <h2 className="text-xl font-bold text-pink-600 mb-2">Kenapa belajar di sini?</h2>
         <ul className="list-disc list-inside text-pink-700 text-left mx-auto max-w-md">
-          <li>Kuis interaktif untuk semua pelajaran utama</li>
-          <li>Penjelasan setiap jawaban agar mudah dipahami</li>
+          <li>Penjelasan singkat setiap jawaban sehingga mudah dipahami</li>
           <li>Tampilan menarik dan mudah digunakan</li>
           <li>Belajar jadi lebih seru dan menyenangkan!</li>
         </ul>
