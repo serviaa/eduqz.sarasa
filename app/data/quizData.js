@@ -4,9 +4,9 @@ export const quizData = {
     { question: "10 × 2 = ?", options: ["20", "22", "18", "25"], correct: "20", explanation: "10 × 2 = 20" },
     // Tambah 8 soal lagi...
   ],
-  'bahasa-indonesia': [
-    { question: "Antonim dari 'besar' adalah?", options: ["tinggi", "panjang", "kecil", "luas"], correct: "kecil", explanation: "'Kecil' adalah lawan kata dari 'besar'." },
-    { question: "Kalimat tanya ditandai dengan?", options: [".", "!", "?", ","], correct: "?", explanation: "Tanda tanya (?) digunakan di akhir kalimat tanya." },
+  'english': [
+    { question: "What is the antonym of 'happy'?", options: ["sad", "glad", "joyful", "excited"], correct: "sad", explanation: "'Sad' is the opposite of 'happy'." },
+    { question: "Choose the correct spelling:", options: ["recieve", "receive", "receeve", "receve"], correct: "receive", explanation: "'Receive' is the correct spelling." },
     // Tambah 8 soal lagi...
   ],
   'ipa': [
