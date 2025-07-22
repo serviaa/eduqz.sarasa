@@ -56,27 +56,27 @@ export default function QuizPage({ questions, category }) {
   const progressPercent = Math.round(((currentQuestion + (showScore ? 1 : 0)) / questions.length) * 100);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-100 to-white flex items-center justify-center p-6">
-      <div className="bg-white rounded-2xl shadow-xl p-8 max-w-2xl w-full border border-pink-200 relative">
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-200 flex items-center justify-center p-6">
+      <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl p-8 max-w-2xl w-full border border-blue-200 relative">
         {/* Category Title */}
-        <h1 className="text-3xl font-bold text-pink-600 mb-4 text-center flex items-center justify-center gap-2">
+        <h1 className="text-3xl font-bold text-blue-600 mb-4 text-center flex items-center justify-center gap-2 drop-shadow">
           {category.replace('-', ' ').toUpperCase()} <span>📝</span>
         </h1>
         {/* Progress & Timer */}
         {!showScore && (
           <>
             <div className="flex justify-between items-center mb-4">
-              <span className="text-pink-600 font-bold">⏱️ Waktu: {formatTime(elapsed)}</span>
-              <span className="text-pink-600 font-bold">Skor: {score}</span>
+              <span className="text-blue-600 font-bold">⏱️ Waktu: {formatTime(elapsed)}</span>
+              <span className="text-blue-600 font-bold">Skor: {score}</span>
             </div>
             {/* Progress Bar */}
-            <div className="w-full h-4 bg-pink-100 rounded-full mb-2 overflow-hidden">
+            <div className="w-full h-4 bg-blue-100 rounded-full mb-2 overflow-hidden">
               <div
-                className="h-4 bg-gradient-to-r from-pink-400 to-pink-600 rounded-full transition-all duration-500"
+                className="h-4 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full transition-all duration-500"
                 style={{ width: `${progressPercent}%` }}
               ></div>
             </div>
-            <div className="text-center text-pink-700 font-semibold mb-6">
+            <div className="text-center text-blue-700 font-semibold mb-6">
               {currentQuestion + 1} / {questions.length} Soal
             </div>
           </>
@@ -84,25 +84,25 @@ export default function QuizPage({ questions, category }) {
 
         {showScore ? (
           <div className="text-center">
-            <p className="text-xl text-pink-700 mb-4">Hasil Kuis Anda:</p>
+            <p className="text-xl text-blue-700 mb-4">Hasil Kuis Anda:</p>
             <div className="flex justify-center gap-8 mb-6">
-              <div className="bg-pink-100 rounded-xl p-4 shadow text-pink-700 font-bold">
+              <div className="bg-blue-100 rounded-xl p-4 shadow text-blue-700 font-bold">
                 <span>✅ Benar: {correctCount}</span>
               </div>
-              <div className="bg-pink-100 rounded-xl p-4 shadow text-pink-700 font-bold">
+              <div className="bg-blue-100 rounded-xl p-4 shadow text-blue-700 font-bold">
                 <span>❌ Salah: {wrongCount}</span>
               </div>
             </div>
-            <p className="text-5xl font-extrabold text-pink-600 mb-4">{score} / {questions.length}</p>
-            <p className="text-lg text-pink-700 mb-4">Waktu pengerjaan: <span className="font-bold">{formatTime(elapsed)}</span></p>
-            <Link href="/" className="bg-pink-500 text-white py-3 px-6 rounded-xl shadow hover:bg-pink-600">
+            <p className="text-5xl font-extrabold text-blue-600 mb-4">{score} / {questions.length}</p>
+            <p className="text-lg text-blue-700 mb-4">Waktu pengerjaan: <span className="font-bold">{formatTime(elapsed)}</span></p>
+            <Link href="/" className="bg-blue-500 text-white py-3 px-6 rounded-xl shadow hover:bg-blue-600">
               🔙 Kembali ke Home
             </Link>
           </div>
         ) : (
           <>
             <div className="mb-6">
-              <h2 className="text-xl font-semibold text-pink-800 mb-3 text-center">
+              <h2 className="text-xl font-semibold text-blue-800 mb-3 text-center">
                 {questions[currentQuestion].question}
               </h2>
               <div className="space-y-3">
@@ -110,12 +110,12 @@ export default function QuizPage({ questions, category }) {
                   <label
                     key={i}
                     className={`flex items-center gap-3 p-4 border rounded-full cursor-pointer transition-all
-                      ${selectedAnswer === opt ? 'bg-pink-100 border-pink-400 scale-105' : 'border-pink-200'}
-                      hover:bg-pink-50 hover:border-pink-300`}
+                      ${selectedAnswer === opt ? 'bg-blue-100 border-blue-400 scale-105' : 'border-blue-200'}
+                      hover:bg-blue-50 hover:border-blue-300`}
                   >
                     <span
                       className={`w-6 h-6 flex items-center justify-center rounded-full border-2
-                        ${selectedAnswer === opt ? 'border-pink-500 bg-pink-400' : 'border-pink-300 bg-white'}
+                        ${selectedAnswer === opt ? 'border-blue-500 bg-blue-400' : 'border-blue-300 bg-white'}
                         transition-all`}
                     >
                       {selectedAnswer === opt && (
@@ -129,7 +129,7 @@ export default function QuizPage({ questions, category }) {
                       onChange={() => setSelectedAnswer(opt)}
                       className="sr-only"
                     />
-                    <span className="text-pink-800">{opt}</span>
+                    <span className="text-blue-800">{opt}</span>
                   </label>
                 ))}
               </div>
@@ -142,15 +142,15 @@ export default function QuizPage({ questions, category }) {
                 }`}>
                   {selectedAnswer === questions[currentQuestion].correct ? 'Benar!' : 'Salah'}
                 </p>
-                <p className="mb-6 text-pink-700">{questions[currentQuestion].explanation}</p>
-                <button onClick={handleNext} className="bg-pink-500 text-white px-6 py-3 rounded-lg shadow hover:bg-pink-600">
+                <p className="mb-6 text-blue-700">{questions[currentQuestion].explanation}</p>
+                <button onClick={handleNext} className="bg-blue-500 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-600">
                   {currentQuestion + 1 === questions.length ? 'Lihat Skor' : 'Soal Selanjutnya'}
                 </button>
               </div>
             ) : (
               <button
                 onClick={handleAnswer}
-                className="bg-pink-500 text-white py-3 px-6 rounded-lg shadow hover:bg-pink-600 w-full font-semibold"
+                className="bg-blue-500 text-white py-3 px-6 rounded-lg shadow hover:bg-blue-600 w-full font-semibold"
               >
                 Jawab
               </button>
