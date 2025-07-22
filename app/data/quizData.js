@@ -2,16 +2,37 @@ export const quizData = {
   'matematika': [
     { question: "5 + 7 = ?", options: ["11", "12", "13", "14"], correct: "12", explanation: "5 + 7 = 12" },
     { question: "10 × 2 = ?", options: ["20", "22", "18", "25"], correct: "20", explanation: "10 × 2 = 20" },
-    // Tambah 8 soal lagi...
+    { question: "15 - 6 = ?", options: ["9", "8", "7", "10"], correct: "9", explanation: "15 - 6 = 9" },
+    { question: "8 × 3 = ?", options: ["24", "21", "18", "26"], correct: "24", explanation: "8 × 3 = 24" },
+    { question: "20 ÷ 4 = ?", options: ["5", "4", "6", "8"], correct: "5", explanation: "20 ÷ 4 = 5" },
+    { question: "12 + 9 = ?", options: ["21", "20", "22", "19"], correct: "21", explanation: "12 + 9 = 21" },
+    { question: "7 × 5 = ?", options: ["35", "30", "25", "40"], correct: "35", explanation: "7 × 5 = 35" },
+    { question: "18 - 7 = ?", options: ["11", "10", "12", "9"], correct: "11", explanation: "18 - 7 = 11" },
+    { question: "9 + 6 = ?", options: ["15", "14", "16", "13"], correct: "15", explanation: "9 + 6 = 15" },
+    { question: "16 ÷ 2 = ?", options: ["8", "6", "7", "9"], correct: "8", explanation: "16 ÷ 2 = 8" },
   ],
   'english': [
     { question: "What is the antonym of 'happy'?", options: ["sad", "glad", "joyful", "excited"], correct: "sad", explanation: "'Sad' is the opposite of 'happy'." },
     { question: "Choose the correct spelling:", options: ["recieve", "receive", "receeve", "receve"], correct: "receive", explanation: "'Receive' is the correct spelling." },
-    // Tambah 8 soal lagi...
+    { question: "What is the plural of 'child'?", options: ["childs", "children", "childes", "childrens"], correct: "children", explanation: "The plural of 'child' is 'children'." },
+    { question: "Which word means 'besar' in English?", options: ["small", "big", "short", "thin"], correct: "big", explanation: "'Big' means 'besar'." },
+    { question: "What is the synonym of 'fast'?", options: ["quick", "slow", "late", "weak"], correct: "quick", explanation: "'Quick' is a synonym of 'fast'." },
+    { question: "Fill in the blank: She ___ to school every day.", options: ["go", "goes", "going", "gone"], correct: "goes", explanation: "'She goes to school every day.'" },
+    { question: "What is the opposite of 'open'?", options: ["close", "closed", "closing", "closes"], correct: "closed", explanation: "'Closed' is the opposite of 'open'." },
+    { question: "Which is a fruit?", options: ["carrot", "apple", "potato", "broccoli"], correct: "apple", explanation: "'Apple' is a fruit." },
+    { question: "How do you say 'selamat pagi' in English?", options: ["Good night", "Good morning", "Good afternoon", "Good evening"], correct: "Good morning", explanation: "'Selamat pagi' means 'Good morning'." },
+    { question: "Which word is a color?", options: ["table", "blue", "run", "book"], correct: "blue", explanation: "'Blue' is a color." },
   ],
   'ipa': [
     { question: "Air membeku pada suhu?", options: ["0°C", "10°C", "50°C", "100°C"], correct: "0°C", explanation: "Air membeku pada suhu 0°C." },
     { question: "Hewan yang hidup di air disebut?", options: ["Amfibi", "Mamalia", "Ikan", "Reptil"], correct: "Ikan", explanation: "Ikan adalah hewan yang hidup di air." },
-    // Tambah 8 soal lagi...
+    { question: "Bagian tumbuhan yang berfungsi menyerap air?", options: ["Akar", "Batang", "Daun", "Bunga"], correct: "Akar", explanation: "Akar menyerap air dari tanah." },
+    { question: "Planet terbesar di tata surya?", options: ["Bumi", "Mars", "Jupiter", "Venus"], correct: "Jupiter", explanation: "Jupiter adalah planet terbesar." },
+    { question: "Alat pernapasan ikan?", options: ["Paru-paru", "Insang", "Kulit", "Trakea"], correct: "Insang", explanation: "Ikan bernapas dengan insang." },
+    { question: "Sumber energi utama bagi bumi?", options: ["Matahari", "Angin", "Air", "Minyak"], correct: "Matahari", explanation: "Matahari adalah sumber energi utama." },
+    { question: "Bagian tubuh manusia untuk mendengar?", options: ["Mata", "Telinga", "Hidung", "Mulut"], correct: "Telinga", explanation: "Telinga digunakan untuk mendengar." },
+    { question: "Benda langit yang memancarkan cahaya sendiri?", options: ["Bulan", "Bintang", "Planet", "Asteroid"], correct: "Bintang", explanation: "Bintang memancarkan cahaya sendiri." },
+    { question: "Proses perubahan air menjadi uap disebut?", options: ["Kondensasi", "Evaporasi", "Presipitasi", "Infiltrasi"], correct: "Evaporasi", explanation: "Evaporasi adalah perubahan air menjadi uap." },
+    { question: "Organ utama pernapasan manusia?", options: ["Jantung", "Paru-paru", "Lambung", "Ginjal"], correct: "Paru-paru", explanation: "Paru-paru adalah organ utama pernapasan." },
   ],
 };
