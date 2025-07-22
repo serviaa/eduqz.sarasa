@@ -4,7 +4,8 @@ import Link from 'next/link';
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-100 to-white flex flex-col items-center justify-center p-6">
-      <h1 className="text-4xl font-bold text-pink-600 mb-8 text-center">📚 Selamat Datang di Kuis eduqz.sarasa</h1>
+      <h1 className="text-4xl font-bold text-pink-600 mb-8 text-center">eduqz.sarasa</h1>
+      <p className="text-lg text-pink-700 mb-6 text-center">"Hanya pendidikan yang bisa menyelamatkan masa depan, tanpa pendidikan Indonesia tak mungkin bertahan." - Najwa Shihab</p>
       <p className="text-lg text-pink-700 mb-6 text-center">Pilih kategori kuis untuk mulai belajar:</p>
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-3">
         {['matematika', 'english', 'ipa'].map((cat) => (
