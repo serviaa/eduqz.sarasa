@@ -32,7 +32,7 @@ export default function HomePage() {
       </div>
 
       <div className="relative z-10 w-full max-w-3xl mx-auto">
-        <h1 className="text-4xl font-bold text-blue-600 mb-4 text-center drop-shadow-lg flex items-center gap-2">
+        <h1 className="text-4xl font-bold text-blue-600 mb-4 text-center drop-shadow-lg flex items-center justify-center gap-2">
           <span>eduqz.sarasa</span>
           <span className="text-5xl">🎓</span>
         </h1>
