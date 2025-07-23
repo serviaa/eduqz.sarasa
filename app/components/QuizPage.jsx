@@ -12,7 +12,6 @@ export default function QuizPage({ questions, category }) {
   const [wrongCount, setWrongCount] = useState(0);
   const [startTime, setStartTime] = useState(Date.now());
   const [elapsed, setElapsed] = useState(0);
-  const [endTime, setEndTime] = useState(null);
 
   useEffect(() => {
     if (!showScore) {
@@ -43,7 +42,6 @@ export default function QuizPage({ questions, category }) {
       setCurrentQuestion(next);
     } else {
       setShowScore(true);
-      setEndTime(new Date()); // Catat waktu selesai kuis
     }
   };
 
@@ -54,132 +52,135 @@ export default function QuizPage({ questions, category }) {
     return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
   };
 
-  // Format tanggal selesai kuis
-  const formatEndTime = (date) => {
-    if (!date) return '';
-    return new Intl.DateTimeFormat('id-ID', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    }).format(date);
-  };
-
   // Progress bar
   const progressPercent = Math.round(((currentQuestion + (showScore ? 1 : 0)) / questions.length) * 100);
 
+  // Hitung persen skor
+  const scorePercent = Math.round((score / questions.length) * 100);
+
+  // Fungsi untuk reload kuis (reset state)
+  const ulangiKuis = () => {
+    setCurrentQuestion(0);
+    setScore(0);
+    setSelectedAnswer('');
+    setShowScore(false);
+    setShowExplanation(false);
+    setCorrectCount(0);
+    setWrongCount(0);
+    setStartTime(Date.now());
+    setElapsed(0);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-200 flex items-center justify-center p-6">
-      <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl p-8 max-w-2xl w-full border border-blue-200 relative">
-        {/* Judul */}
-        <h1 className="text-3xl font-bold text-blue-600 mb-4 text-center flex items-center justify-center gap-2 drop-shadow">
-          {category.replace('-', ' ').toUpperCase()} <span>📝</span>
+      <div className="bg-white rounded-xl shadow-xl p-8 max-w-md w-full border border-blue-200">
+        {/* Judul Kuis */}
+        <h1 className="text-2xl font-bold text-blue-700 mb-4 text-center flex justify-center items-center gap-2">
+          <span className="text-2xl">🎓</span> {category.replace('-', ' ').toUpperCase()}
         </h1>
 
-        {/* Progress & Timer */}
+        {/* Progress bar & skor saat kuis berjalan */}
         {!showScore && (
           <>
-            <div className="flex justify-between items-center mb-4">
-              <span className="text-blue-600 font-bold">⏱️ Waktu: {formatTime(elapsed)}</span>
-              <span className="text-blue-600 font-bold">Skor: {score}</span>
+            <div className="flex justify-between mb-1 text-sm text-blue-700 font-medium">
+              <div>Soal {currentQuestion + 1} dari {questions.length}</div>
+              <div>Skor: {score}</div>
             </div>
-
-            <div className="w-full h-4 bg-blue-100 rounded-full mb-2 overflow-hidden">
+            <div className="w-full h-2 bg-blue-100 rounded-full overflow-hidden mb-6">
               <div
-                className="h-4 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full transition-all duration-500"
+                className="h-2 bg-gradient-to-r from-blue-500 to-blue-700 rounded-full transition-all duration-500"
                 style={{ width: `${progressPercent}%` }}
-              ></div>
-            </div>
-
-            <div className="text-center text-blue-700 font-semibold mb-6">
-              {currentQuestion + 1} / {questions.length} Soal
+              />
             </div>
           </>
         )}
 
-        {/* Hasil akhir */}
+        {/* Tampilkan hasil akhir */}
         {showScore ? (
           <div className="text-center">
-            <p className="text-xl text-blue-700 mb-4">Hasil Kuis Anda:</p>
+            <p className="text-green-700 font-semibold text-lg mb-4">
+              Kuis Selesai! <span>🎉</span>
+            </p>
 
-            <div className="flex justify-center gap-8 mb-6">
-              <div className="bg-blue-100 rounded-xl p-4 shadow text-blue-700 font-bold">
-                ✅ Benar: {correctCount}
-              </div>
-              <div className="bg-blue-100 rounded-xl p-4 shadow text-blue-700 font-bold">
-                ❌ Salah: {wrongCount}
-              </div>
+            <div className="bg-green-100 rounded-md py-6 mb-6">
+              <p className="text-3xl font-bold text-green-700">{score}/{questions.length}</p>
+              <p className="text-green-600">Skor Anda: {scorePercent}%</p>
             </div>
 
-            <p className="text-5xl font-extrabold text-blue-600 mb-4">{score} / {questions.length}</p>
+            <button
+              onClick={ulangiKuis}
+              className="bg-blue-600 text-white rounded-md py-3 px-6 mb-3 w-full hover:bg-blue-700 transition"
+            >
+              Ulangi Kuis
+            </button>
 
-            <p className="text-lg text-blue-700 mb-1">
-              Waktu pengerjaan: <span className="font-bold">{formatTime(elapsed)}</span>
-            </p>
-
-            <p className="text-sm text-blue-500 mb-6 italic">
-              Selesai pada: {formatEndTime(endTime)}
-            </p>
-
-            <Link href="/" className="bg-blue-500 text-white py-3 px-6 rounded-xl shadow hover:bg-blue-600">
-              🔙 Kembali ke Home
+            <Link
+              href="/"
+              className="bg-gray-600 text-white rounded-md py-3 px-6 w-full block hover:bg-gray-700 transition"
+            >
+              Kembali ke Home
             </Link>
           </div>
         ) : (
           <>
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-blue-800 mb-3 text-center">
-                {questions[currentQuestion].question}
-              </h2>
-
-              <div className="space-y-3">
-                {questions[currentQuestion].options.map((opt, i) => (
-                  <label
-                    key={i}
-                    className={`flex items-center gap-3 p-4 border rounded-full cursor-pointer transition-all
-                      ${selectedAnswer === opt ? 'bg-blue-100 border-blue-400 scale-105' : 'border-blue-200'}
-                      hover:bg-blue-50 hover:border-blue-300`}
-                  >
-                    <span
-                      className={`w-6 h-6 flex items-center justify-center rounded-full border-2
-                        ${selectedAnswer === opt ? 'border-blue-500 bg-blue-400' : 'border-blue-300 bg-white'}
-                        transition-all`}
-                    >
-                      {selectedAnswer === opt && (
-                        <span className="w-3 h-3 bg-white rounded-full block"></span>
-                      )}
-                    </span>
-                    <input
-                      type="radio"
-                      name="answer"
-                      value={opt}
-                      onChange={() => setSelectedAnswer(opt)}
-                      className="sr-only"
-                    />
-                    <span className="text-blue-800">{opt}</span>
-                  </label>
-                ))}
-              </div>
+            {/* Soal dan pilihan jawaban */}
+            <div className="mb-6 text-center text-blue-800 font-semibold text-lg">
+              {questions[currentQuestion].question}
             </div>
 
+            <div className="space-y-3 mb-6">
+              {questions[currentQuestion].options.map((opt, idx) => (
+                <label
+                  key={idx}
+                  className={`flex items-center gap-3 p-4 border rounded-full cursor-pointer transition-all
+                    ${selectedAnswer === opt ? 'bg-blue-100 border-blue-500 scale-105' : 'border-blue-300'}
+                    hover:bg-blue-50 hover:border-blue-400`}
+                >
+                  <span
+                    className={`w-6 h-6 flex items-center justify-center rounded-full border-2
+                      ${selectedAnswer === opt ? 'border-blue-600 bg-blue-500' : 'border-blue-300 bg-white'}
+                      transition-all`}
+                  >
+                    {selectedAnswer === opt && (
+                      <span className="w-3 h-3 bg-white rounded-full block"></span>
+                    )}
+                  </span>
+                  <input
+                    type="radio"
+                    name="answer"
+                    value={opt}
+                    onChange={() => setSelectedAnswer(opt)}
+                    className="sr-only"
+                  />
+                  <span className="text-blue-800">{opt}</span>
+                </label>
+              ))}
+            </div>
+
+            {/* Tombol dan penjelasan jawaban */}
             {showExplanation ? (
               <div className="text-center">
-                <p className={`text-lg font-semibold mb-3 ${
-                  selectedAnswer === questions[currentQuestion].correct ? 'text-green-600' : 'text-red-500'
-                }`}>
+                <p
+                  className={`text-lg font-semibold mb-3 ${
+                    selectedAnswer === questions[currentQuestion].correct
+                      ? 'text-green-600'
+                      : 'text-red-500'
+                  }`}
+                >
                   {selectedAnswer === questions[currentQuestion].correct ? 'Benar!' : 'Salah'}
                 </p>
                 <p className="mb-6 text-blue-700">{questions[currentQuestion].explanation}</p>
-                <button onClick={handleNext} className="bg-blue-500 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-600">
+                <button
+                  onClick={handleNext}
+                  className="bg-blue-600 text-white py-3 px-6 rounded-md hover:bg-blue-700 transition"
+                >
                   {currentQuestion + 1 === questions.length ? 'Lihat Skor' : 'Soal Selanjutnya'}
                 </button>
               </div>
             ) : (
               <button
                 onClick={handleAnswer}
-                className="bg-blue-500 text-white py-3 px-6 rounded-lg shadow hover:bg-blue-600 w-full font-semibold"
+                className="bg-blue-600 text-white py-3 px-6 rounded-md w-full hover:bg-blue-700 transition font-semibold"
               >
                 Jawab
               </button>
