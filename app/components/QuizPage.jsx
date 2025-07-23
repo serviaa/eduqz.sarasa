@@ -98,14 +98,24 @@ export default function QuizPage({ questions, category }) {
         {/* Tampilkan hasil akhir */}
         {showScore ? (
           <div className="text-center">
-            <p className="text-green-700 font-semibold text-lg mb-4">
+            {/* Garis pembatas atas */}
+            <div className="border-t-2 border-green-600 mb-3"></div>
+
+            <p className="text-green-700 font-semibold text-lg mb-4 flex justify-center items-center gap-2">
               Kuis Selesai! <span>🎉</span>
             </p>
+
+            {/* Garis pembatas bawah */}
+            <div className="border-b-2 border-green-600 mb-6"></div>
 
             <div className="bg-green-100 rounded-md py-6 mb-6">
               <p className="text-3xl font-bold text-green-700">{score}/{questions.length}</p>
               <p className="text-green-600">Skor Anda: {scorePercent}%</p>
             </div>
+
+            <p className="mb-6 text-blue-700 font-semibold">
+              Waktu pengerjaan: <span className="font-bold">{formatTime(elapsed)}</span>
+            </p>
 
             <button
               onClick={ulangiKuis}
