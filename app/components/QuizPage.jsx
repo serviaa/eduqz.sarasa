@@ -54,8 +54,6 @@ export default function QuizPage({ questions, category }) {
 
   // Progress bar
   const progressPercent = Math.round(((currentQuestion + (showScore ? 1 : 0)) / questions.length) * 100);
-
-  // Hitung persen skor
   const scorePercent = Math.round((score / questions.length) * 100);
 
   // Fungsi untuk reload kuis (reset state)
@@ -79,51 +77,39 @@ export default function QuizPage({ questions, category }) {
           <span className="text-2xl">🎓</span> {category.replace('-', ' ').toUpperCase()}
         </h1>
 
-        {/* Progress bar & skor saat kuis berjalan */}
-        {!showScore && (
-          <>
-            <div className="flex justify-between mb-1 text-sm text-blue-700 font-medium">
-              <div>Soal {currentQuestion + 1} dari {questions.length}</div>
-              <div>Skor: {score}</div>
-            </div>
-            <div className="w-full h-2 bg-blue-100 rounded-full overflow-hidden mb-6">
-              <div
-                className="h-2 bg-gradient-to-r from-blue-500 to-blue-700 rounded-full transition-all duration-500"
-                style={{ width: `${progressPercent}%` }}
-              />
-            </div>
-          </>
-        )}
+        {/* Progress bar & skor */}
+        <div className="flex justify-between mb-2 text-sm text-blue-700 font-medium">
+          <div>
+            Soal {showScore ? questions.length : currentQuestion + 1} dari {questions.length}
+          </div>
+          <div>Skor: {score}</div>
+        </div>
+        <div className="w-full h-2 bg-blue-100 rounded-full overflow-hidden mb-6">
+          <div
+            className="h-2 bg-gradient-to-r from-blue-500 to-blue-700 rounded-full transition-all duration-500"
+            style={{ width: `${progressPercent}%` }}
+          />
+        </div>
 
         {/* Tampilkan hasil akhir */}
         {showScore ? (
           <div className="text-center">
-            {/* Garis pembatas atas */}
-            <div className="border-t-2 border-green-600 mb-3"></div>
-
-            <p className="text-green-700 font-semibold text-lg mb-4 flex justify-center items-center gap-2">
+            <p className="text-blue-700 font-semibold text-lg mb-4 flex justify-center items-center gap-2">
               Kuis Selesai! <span>🎉</span>
             </p>
-
-            {/* Garis pembatas bawah */}
-            <div className="border-b-2 border-green-600 mb-6"></div>
-
-            <div className="bg-green-100 rounded-md py-6 mb-6">
-              <p className="text-3xl font-bold text-green-700">{score}/{questions.length}</p>
-              <p className="text-green-600">Skor Anda: {scorePercent}%</p>
+            <div className="bg-blue-50 rounded-md py-6 mb-6">
+              <p className="text-3xl font-bold text-blue-700">{score}/{questions.length}</p>
+              <p className="text-blue-600">Skor Anda: {scorePercent}%</p>
             </div>
-
             <p className="mb-6 text-blue-700 font-semibold">
               Waktu pengerjaan: <span className="font-bold">{formatTime(elapsed)}</span>
             </p>
-
             <button
               onClick={ulangiKuis}
               className="bg-blue-600 text-white rounded-md py-3 px-6 mb-3 w-full hover:bg-blue-700 transition"
             >
               Ulangi Kuis
             </button>
-
             <Link
               href="/"
               className="bg-gray-600 text-white rounded-md py-3 px-6 w-full block hover:bg-gray-700 transition"
@@ -137,7 +123,6 @@ export default function QuizPage({ questions, category }) {
             <div className="mb-6 text-center text-blue-800 font-semibold text-lg">
               {questions[currentQuestion].question}
             </div>
-
             <div className="space-y-3 mb-6">
               {questions[currentQuestion].options.map((opt, idx) => (
                 <label
@@ -166,7 +151,6 @@ export default function QuizPage({ questions, category }) {
                 </label>
               ))}
             </div>
-
             {/* Tombol dan penjelasan jawaban */}
             {showExplanation ? (
               <div className="text-center">
