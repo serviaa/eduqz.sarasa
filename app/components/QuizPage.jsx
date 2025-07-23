@@ -123,10 +123,10 @@ export default function QuizPage({ questions, category }) {
             <div className="mb-6 text-center text-blue-800 font-semibold text-lg">
               {questions[currentQuestion].question}
             </div>
-            <div className="space-y-3 mb-6">
+            <div key={currentQuestion} className="space-y-3 mb-6">
               {questions[currentQuestion].options.map((opt, idx) => (
                 <label
-                  key={idx}
+                  key={opt}
                   className={`flex items-center gap-3 p-4 border rounded-full cursor-pointer transition-all
                     ${selectedAnswer === opt ? 'bg-blue-100 border-blue-500 scale-105' : 'border-blue-300'}
                     hover:bg-blue-50 hover:border-blue-400`}
@@ -144,6 +144,7 @@ export default function QuizPage({ questions, category }) {
                     type="radio"
                     name="answer"
                     value={opt}
+                    checked={selectedAnswer === opt}
                     onChange={() => setSelectedAnswer(opt)}
                     className="sr-only"
                   />
