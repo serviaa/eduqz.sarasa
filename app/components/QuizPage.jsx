@@ -12,6 +12,7 @@ export default function QuizPage({ questions, category }) {
   const [wrongCount, setWrongCount] = useState(0);
   const [startTime, setStartTime] = useState(Date.now());
   const [elapsed, setElapsed] = useState(0);
+  const [endTime, setEndTime] = useState(null);
 
   useEffect(() => {
     if (!showScore) {
@@ -42,26 +43,41 @@ export default function QuizPage({ questions, category }) {
       setCurrentQuestion(next);
     } else {
       setShowScore(true);
+      setEndTime(new Date()); // Catat waktu selesai kuis
     }
   };
 
-  // Format waktu
+  // Format waktu ke MM:SS
   const formatTime = (sec) => {
     const m = Math.floor(sec / 60);
     const s = sec % 60;
     return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
   };
 
-  // Progress bar calculation
+  // Format tanggal selesai kuis
+  const formatEndTime = (date) => {
+    if (!date) return '';
+    return new Intl.DateTimeFormat('id-ID', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    }).format(date);
+  };
+
+  // Progress bar
   const progressPercent = Math.round(((currentQuestion + (showScore ? 1 : 0)) / questions.length) * 100);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-blue-200 flex items-center justify-center p-6">
       <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl p-8 max-w-2xl w-full border border-blue-200 relative">
-        {/* Category Title */}
+        {/* Judul */}
         <h1 className="text-3xl font-bold text-blue-600 mb-4 text-center flex items-center justify-center gap-2 drop-shadow">
           {category.replace('-', ' ').toUpperCase()} <span>📝</span>
         </h1>
+
         {/* Progress & Timer */}
         {!showScore && (
           <>
@@ -69,32 +85,44 @@ export default function QuizPage({ questions, category }) {
               <span className="text-blue-600 font-bold">⏱️ Waktu: {formatTime(elapsed)}</span>
               <span className="text-blue-600 font-bold">Skor: {score}</span>
             </div>
-            {/* Progress Bar */}
+
             <div className="w-full h-4 bg-blue-100 rounded-full mb-2 overflow-hidden">
               <div
                 className="h-4 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full transition-all duration-500"
                 style={{ width: `${progressPercent}%` }}
               ></div>
             </div>
+
             <div className="text-center text-blue-700 font-semibold mb-6">
               {currentQuestion + 1} / {questions.length} Soal
             </div>
           </>
         )}
 
+        {/* Hasil akhir */}
         {showScore ? (
           <div className="text-center">
             <p className="text-xl text-blue-700 mb-4">Hasil Kuis Anda:</p>
+
             <div className="flex justify-center gap-8 mb-6">
               <div className="bg-blue-100 rounded-xl p-4 shadow text-blue-700 font-bold">
-                <span>✅ Benar: {correctCount}</span>
+                ✅ Benar: {correctCount}
               </div>
               <div className="bg-blue-100 rounded-xl p-4 shadow text-blue-700 font-bold">
-                <span>❌ Salah: {wrongCount}</span>
+                ❌ Salah: {wrongCount}
               </div>
             </div>
+
             <p className="text-5xl font-extrabold text-blue-600 mb-4">{score} / {questions.length}</p>
-            <p className="text-lg text-blue-700 mb-4">Waktu pengerjaan: <span className="font-bold">{formatTime(elapsed)}</span></p>
+
+            <p className="text-lg text-blue-700 mb-1">
+              Waktu pengerjaan: <span className="font-bold">{formatTime(elapsed)}</span>
+            </p>
+
+            <p className="text-sm text-blue-500 mb-6 italic">
+              Selesai pada: {formatEndTime(endTime)}
+            </p>
+
             <Link href="/" className="bg-blue-500 text-white py-3 px-6 rounded-xl shadow hover:bg-blue-600">
               🔙 Kembali ke Home
             </Link>
@@ -105,6 +133,7 @@ export default function QuizPage({ questions, category }) {
               <h2 className="text-xl font-semibold text-blue-800 mb-3 text-center">
                 {questions[currentQuestion].question}
               </h2>
+
               <div className="space-y-3">
                 {questions[currentQuestion].options.map((opt, i) => (
                   <label
