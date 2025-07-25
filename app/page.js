@@ -7,17 +7,17 @@ const categories = [
   {
     key: 'matematika',
     label: 'MATH',
-    img: '/images/matematika.svg', // Sebaiknya pakai SVG flat icon
+    img: '/images/matematika.jpg', 
   },
   {
     key: 'english',
     label: 'ENGLISH',
-    img: '/images/english.svg',
+    img: '/images/english.jpeg',
   },
   {
     key: 'ipa',
     label: 'SCIENCE',
-    img: '/images/ipa.svg',
+    img: '/images/ipa.jpg',
   },
 ];
 
