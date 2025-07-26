@@ -19,7 +19,7 @@ export default function HomePage() {
           transition={{ duration: 0.7 }}
           className="text-4xl md:text-5xl font-bold text-neutral-800 mb-6 flex items-center justify-center gap-2"
         >
-          eduqz.sarasa <span className="text-5xl">🎓</span>
+          sarasa learn <span className="text-5xl">✨</span>
         </motion.h1>
 
         {/* QUOTE TANPA TANDA PETIK */}
