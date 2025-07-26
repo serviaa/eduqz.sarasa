@@ -22,26 +22,20 @@ export default function HomePage() {
           eduqz.sarasa <span className="text-5xl">🎓</span>
         </motion.h1>
 
-        {/* Quotes Section */}
+        {/* QUOTE FIXED ✅ */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.7 }}
           className="flex justify-center"
         >
-          <div className="relative bg-white/80 border border-neutral-200 rounded-xl shadow-md px-8 py-6 pb-14 mb-8 max-w-2xl mx-auto">
-            {/* Opening Quote */}
-            <span className="absolute top-4 left-6 text-4xl text-neutral-300 font-serif select-none">“</span>
-
-            <p className="text-neutral-700 italic text-base md:text-lg pr-8">
+          <div className="relative bg-white/80 border border-neutral-200 rounded-xl shadow-md px-8 py-6 mb-8 max-w-2xl mx-auto">
+            <p className="text-neutral-700 italic text-base md:text-lg relative">
+              <span className="text-4xl text-neutral-300 font-serif mr-2 align-top select-none">“</span>
               Hanya pendidikan yang bisa menyelamatkan masa depan, tanpa pendidikan Indonesia tak mungkin bertahan.
+              <span className="text-4xl text-neutral-300 font-serif ml-2 align-bottom select-none">”</span>
             </p>
-
-            {/* Closing Quote */}
-            <span className="absolute bottom-4 right-6 text-4xl text-neutral-300 font-serif select-none">”</span>
-
-            {/* Tokoh quote diturunkan */}
-            <p className="text-neutral-600 font-semibold mt-10 text-right">- Najwa Shihab</p>
+            <p className="text-neutral-600 font-semibold mt-6 text-right">- Najwa Shihab</p>
           </div>
         </motion.div>
 
