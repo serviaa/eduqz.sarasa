@@ -25,13 +25,25 @@ export default function QuizPage({ questions, category }) {
   const handleAnswer = () => {
     if (!selectedAnswer) return alert('Pilih jawaban!');
     const isCorrect = selectedAnswer === questions[currentQuestion].correct;
+
     if (isCorrect) {
-      setScore(score + 1);
-      setCorrectCount(correctCount + 1);
+      setScore((prev) => prev + 1);
+      setCorrectCount((prev) => prev + 1);
+
+      if (currentQuestion + 1 === questions.length) {
+        // Soal terakhir → langsung tampilkan skor
+        setShowScore(true);
+      } else {
+        // Soal bukan terakhir → langsung lanjut ke soal berikutnya
+        setTimeout(() => {
+          setSelectedAnswer('');
+          setCurrentQuestion((prev) => prev + 1);
+        }, 1500);
+      }
     } else {
-      setWrongCount(wrongCount + 1);
+      setWrongCount((prev) => prev + 1);
+      setShowExplanation(true); // Jika salah, tampilkan penjelasan dan tombol "Soal Selanjutnya"
     }
-    setShowExplanation(true);
   };
 
   const handleNext = () => {
@@ -155,8 +167,8 @@ export default function QuizPage({ questions, category }) {
               ))}
             </div>
 
-            {/* Tombol dan Penjelasan */}
-            {showExplanation ? (
+            {/* Penjelasan jika salah */}
+            {showExplanation && !showScore && (
               <div className="text-center">
                 <p
                   className={`text-lg font-semibold mb-3 ${
@@ -172,10 +184,13 @@ export default function QuizPage({ questions, category }) {
                   onClick={handleNext}
                   className="bg-black text-white py-3 px-6 rounded-md hover:bg-gray-800 transition"
                 >
-                  {currentQuestion + 1 === questions.length ? 'Lihat Skor' : 'Soal Selanjutnya'}
+                  Soal Selanjutnya
                 </button>
               </div>
-            ) : (
+            )}
+
+            {/* Tombol Jawab */}
+            {!showExplanation && !showScore && (
               <button
                 onClick={handleAnswer}
                 className="bg-black text-white py-3 px-6 rounded-md w-full hover:bg-gray-800 transition font-semibold"
