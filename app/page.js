@@ -22,19 +22,23 @@ export default function HomePage() {
           eduqz.sarasa <span className="text-5xl">🎓</span>
         </motion.h1>
 
-        {/* QUOTE YANG SESUAI ✅ */}
+        {/* QUOTE SESUAI GAMBAR & NUANSA HITAM PUTIH */}
         <motion.figure
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.7 }}
-          className="bg-white/90 border border-neutral-200 rounded-xl shadow-md px-8 py-6 mb-8 max-w-2xl mx-auto text-left"
+          className="bg-white border border-neutral-300 rounded-xl shadow-md px-8 py-6 mb-8 max-w-2xl mx-auto text-left relative"
         >
-          <blockquote className="text-neutral-700 italic text-lg md:text-xl leading-relaxed relative">
-            <span className="text-4xl text-neutral-300 font-serif mr-1 select-none align-top">“</span>
-            Hanya pendidikan yang bisa menyelamatkan masa depan, tanpa pendidikan Indonesia tak mungkin bertahan.
-            <span className="text-4xl text-neutral-300 font-serif ml-1 select-none align-bottom">”</span>
+          <blockquote className="text-neutral-800 italic text-lg md:text-xl leading-relaxed relative">
+            <span className="text-4xl text-neutral-400 font-serif mr-2 select-none align-top">“</span>
+            <span className="block pl-6">
+              Hanya pendidikan yang bisa menyelamatkan masa depan, tanpa pendidikan Indonesia tak mungkin bertahan.
+            </span>
           </blockquote>
-          <footer className="mt-4 text-right text-neutral-700 font-semibold">– Najwa Shihab</footer>
+          <footer className="mt-4 text-right text-neutral-800 font-semibold relative">
+            <span className="absolute -top-3 right-0 text-4xl text-neutral-400 font-serif select-none">”</span>
+            – Najwa Shihab
+          </footer>
         </motion.figure>
 
         <motion.p
