@@ -74,12 +74,15 @@ export default function QuizPage({ questions, category }) {
           <span className="text-2xl">📝</span> {category.replace('-', ' ').toUpperCase()}
         </h1>
 
-        {/* Info Soal dan Skor */}
+        {/* Info Soal, Waktu, dan Skor */}
         <div className="flex justify-between mb-2 text-sm text-gray-700 font-medium">
           <div>
             Soal {showScore ? questions.length : currentQuestion + 1} dari {questions.length}
+            {!showScore && (
+              <div className="text-gray-500 text-xs mt-1">Waktu: {formatTime(elapsed)}</div>
+            )}
           </div>
-          <div>Skor: {score}</div>
+          <div className="text-right">Skor: {score}</div>
         </div>
 
         {/* Progress */}
