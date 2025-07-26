@@ -32,15 +32,16 @@ export default function HomePage() {
           <div className="relative bg-white/80 border border-neutral-200 rounded-xl shadow-md px-8 py-6 mb-8 max-w-2xl mx-auto">
             {/* Opening Quote */}
             <span className="absolute top-4 left-6 text-4xl text-neutral-300 font-serif select-none">“</span>
-            
-            <p className="text-neutral-700 italic text-base md:text-lg">
+
+            <p className="text-neutral-700 italic text-base md:text-lg pr-8 mb-6">
               Hanya pendidikan yang bisa menyelamatkan masa depan, tanpa pendidikan Indonesia tak mungkin bertahan.
             </p>
 
             {/* Closing Quote */}
             <span className="absolute bottom-4 right-6 text-4xl text-neutral-300 font-serif select-none">”</span>
 
-            <p className="text-neutral-600 font-semibold mt-4 text-right">- Najwa Shihab</p>
+            {/* Tokoh quote diturunkan dengan mt-10 */}
+            <p className="text-neutral-600 font-semibold mt-10 text-right">- Najwa Shihab</p>
           </div>
         </motion.div>
 
