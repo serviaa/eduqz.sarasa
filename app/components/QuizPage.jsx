@@ -1,9 +1,20 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import confetti from 'canvas-confetti'; // ✅ Tambahkan ini
+import confetti from 'canvas-confetti';
+
+// Fungsi untuk mengacak array
+function shuffleArray(array) {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
 
 export default function QuizPage({ questions, category }) {
+  const [shuffledQuestions, setShuffledQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState('');
@@ -14,6 +25,15 @@ export default function QuizPage({ questions, category }) {
   const [startTime, setStartTime] = useState(Date.now());
   const [elapsed, setElapsed] = useState(0);
 
+  // Inisialisasi soal dan acak opsi jawaban
+  useEffect(() => {
+    const randomized = shuffleArray(questions).map((q) => ({
+      ...q,
+      options: shuffleArray(q.options),
+    }));
+    setShuffledQuestions(randomized);
+  }, [questions]);
+
   useEffect(() => {
     if (!showScore) {
       const timer = setInterval(() => {
@@ -23,28 +43,24 @@ export default function QuizPage({ questions, category }) {
     }
   }, [showScore, startTime]);
 
+  if (shuffledQuestions.length === 0) return <div>Loading...</div>;
+
   const handleAnswer = () => {
     if (!selectedAnswer) return alert('Pilih jawaban!');
-    const isCorrect = selectedAnswer === questions[currentQuestion].correct;
+    const isCorrect = selectedAnswer === shuffledQuestions[currentQuestion].correct;
 
     if (isCorrect) {
-      // 🎉 Tambahkan efek confetti
-      confetti({
-        particleCount: 120,
-        spread: 100,
-        origin: { y: 0.6 },
-      });
-
+      confetti({ particleCount: 100, spread: 100, origin: { y: 0.6 } });
       setScore((prev) => prev + 1);
       setCorrectCount((prev) => prev + 1);
 
-      if (currentQuestion + 1 === questions.length) {
+      if (currentQuestion + 1 === shuffledQuestions.length) {
         setShowScore(true);
       } else {
         setTimeout(() => {
           setSelectedAnswer('');
           setCurrentQuestion((prev) => prev + 1);
-        }, 1200); // efek delay untuk next soal
+        }, 1000);
       }
     } else {
       setWrongCount((prev) => prev + 1);
@@ -56,7 +72,7 @@ export default function QuizPage({ questions, category }) {
     setSelectedAnswer('');
     setShowExplanation(false);
     const next = currentQuestion + 1;
-    if (next < questions.length) {
+    if (next < shuffledQuestions.length) {
       setCurrentQuestion(next);
     } else {
       setShowScore(true);
@@ -69,8 +85,8 @@ export default function QuizPage({ questions, category }) {
     return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
   };
 
-  const progressPercent = Math.round(((currentQuestion + (showScore ? 1 : 0)) / questions.length) * 100);
-  const scorePercent = Math.round((score / questions.length) * 100);
+  const progressPercent = Math.round(((currentQuestion + (showScore ? 1 : 0)) / shuffledQuestions.length) * 100);
+  const scorePercent = Math.round((score / shuffledQuestions.length) * 100);
 
   const ulangiKuis = () => {
     setCurrentQuestion(0);
@@ -82,7 +98,14 @@ export default function QuizPage({ questions, category }) {
     setWrongCount(0);
     setStartTime(Date.now());
     setElapsed(0);
+    const randomized = shuffleArray(questions).map((q) => ({
+      ...q,
+      options: shuffleArray(q.options),
+    }));
+    setShuffledQuestions(randomized);
   };
+
+  const current = shuffledQuestions[currentQuestion];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 via-white to-gray-200 flex items-center justify-center p-6">
@@ -93,10 +116,8 @@ export default function QuizPage({ questions, category }) {
 
         <div className="flex justify-between mb-2 text-sm text-gray-700 font-medium">
           <div>
-            Soal {showScore ? questions.length : currentQuestion + 1} dari {questions.length}
-            {!showScore && (
-              <div className="text-gray-500 text-xs mt-1">Waktu: {formatTime(elapsed)}</div>
-            )}
+            Soal {showScore ? shuffledQuestions.length : currentQuestion + 1} dari {shuffledQuestions.length}
+            {!showScore && <div className="text-gray-500 text-xs mt-1">Waktu: {formatTime(elapsed)}</div>}
           </div>
           <div className="text-right">Skor: {score}</div>
         </div>
@@ -114,7 +135,7 @@ export default function QuizPage({ questions, category }) {
               Kuis Selesai! <span>🎉</span>
             </p>
             <div className="bg-gray-100 rounded-md py-6 mb-6">
-              <p className="text-3xl font-bold text-gray-800">{score}/{questions.length}</p>
+              <p className="text-3xl font-bold text-gray-800">{score}/{shuffledQuestions.length}</p>
               <p className="text-gray-600">Skor Anda: {scorePercent}%</p>
             </div>
             <p className="mb-6 text-gray-700 font-semibold">
@@ -136,10 +157,10 @@ export default function QuizPage({ questions, category }) {
         ) : (
           <>
             <div className="mb-6 text-center text-gray-800 font-semibold text-lg">
-              {questions[currentQuestion].question}
+              {current.question}
             </div>
             <div key={currentQuestion} className="space-y-3 mb-6">
-              {questions[currentQuestion].options.map((opt) => (
+              {current.options.map((opt) => (
                 <label
                   key={opt}
                   className={`flex items-center gap-3 p-4 border rounded-full cursor-pointer transition-all
@@ -172,14 +193,12 @@ export default function QuizPage({ questions, category }) {
               <div className="text-center">
                 <p
                   className={`text-lg font-semibold mb-3 ${
-                    selectedAnswer === questions[currentQuestion].correct
-                      ? 'text-green-600'
-                      : 'text-red-500'
+                    selectedAnswer === current.correct ? 'text-green-600' : 'text-red-500'
                   }`}
                 >
-                  {selectedAnswer === questions[currentQuestion].correct ? 'Benar!' : 'Salah'}
+                  {selectedAnswer === current.correct ? 'Benar!' : 'Salah'}
                 </p>
-                <p className="mb-6 text-gray-700">{questions[currentQuestion].explanation}</p>
+                <p className="mb-6 text-gray-700">{current.explanation}</p>
                 <button
                   onClick={handleNext}
                   className="bg-black text-white py-3 px-6 rounded-md hover:bg-gray-800 transition"
