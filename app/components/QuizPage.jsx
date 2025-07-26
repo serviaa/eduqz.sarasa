@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import confetti from 'canvas-confetti'; // ✅ Tambahkan ini
 
 export default function QuizPage({ questions, category }) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -27,22 +28,27 @@ export default function QuizPage({ questions, category }) {
     const isCorrect = selectedAnswer === questions[currentQuestion].correct;
 
     if (isCorrect) {
+      // 🎉 Tambahkan efek confetti
+      confetti({
+        particleCount: 120,
+        spread: 100,
+        origin: { y: 0.6 },
+      });
+
       setScore((prev) => prev + 1);
       setCorrectCount((prev) => prev + 1);
 
       if (currentQuestion + 1 === questions.length) {
-        // Soal terakhir → langsung tampilkan skor
         setShowScore(true);
       } else {
-        // Soal bukan terakhir → langsung lanjut ke soal berikutnya
         setTimeout(() => {
           setSelectedAnswer('');
           setCurrentQuestion((prev) => prev + 1);
-        }, 1500);
+        }, 1200); // efek delay untuk next soal
       }
     } else {
       setWrongCount((prev) => prev + 1);
-      setShowExplanation(true); // Jika salah, tampilkan penjelasan dan tombol "Soal Selanjutnya"
+      setShowExplanation(true);
     }
   };
 
@@ -81,12 +87,10 @@ export default function QuizPage({ questions, category }) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 via-white to-gray-200 flex items-center justify-center p-6">
       <div className="bg-white rounded-xl shadow-xl p-8 max-w-md w-full border border-gray-200">
-        {/* Judul */}
         <h1 className="text-2xl font-bold text-gray-800 mb-4 text-center flex justify-center items-center gap-2">
           <span className="text-2xl">📝</span> {category.replace('-', ' ').toUpperCase()}
         </h1>
 
-        {/* Info Soal, Waktu, dan Skor */}
         <div className="flex justify-between mb-2 text-sm text-gray-700 font-medium">
           <div>
             Soal {showScore ? questions.length : currentQuestion + 1} dari {questions.length}
@@ -97,7 +101,6 @@ export default function QuizPage({ questions, category }) {
           <div className="text-right">Skor: {score}</div>
         </div>
 
-        {/* Progress */}
         <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden mb-6">
           <div
             className="h-2 bg-gray-700 rounded-full transition-all duration-500"
@@ -105,7 +108,6 @@ export default function QuizPage({ questions, category }) {
           />
         </div>
 
-        {/* Hasil akhir */}
         {showScore ? (
           <div className="text-center">
             <p className="text-gray-800 font-semibold text-lg mb-4 flex justify-center items-center gap-2">
@@ -133,7 +135,6 @@ export default function QuizPage({ questions, category }) {
           </div>
         ) : (
           <>
-            {/* Soal */}
             <div className="mb-6 text-center text-gray-800 font-semibold text-lg">
               {questions[currentQuestion].question}
             </div>
@@ -167,7 +168,6 @@ export default function QuizPage({ questions, category }) {
               ))}
             </div>
 
-            {/* Penjelasan jika salah */}
             {showExplanation && !showScore && (
               <div className="text-center">
                 <p
@@ -189,7 +189,6 @@ export default function QuizPage({ questions, category }) {
               </div>
             )}
 
-            {/* Tombol Jawab */}
             {!showExplanation && !showScore && (
               <button
                 onClick={handleAnswer}
