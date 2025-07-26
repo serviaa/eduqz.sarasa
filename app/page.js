@@ -22,7 +22,7 @@ export default function HomePage() {
           eduqz.sarasa <span className="text-5xl">🎓</span>
         </motion.h1>
 
-        {/* QUOTE SESUAI GAMBAR & NUANSA HITAM PUTIH */}
+        {/* QUOTE TANPA TANDA PETIK */}
         <motion.figure
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -30,13 +30,9 @@ export default function HomePage() {
           className="bg-white border border-neutral-300 rounded-xl shadow-md px-8 py-6 mb-8 max-w-2xl mx-auto text-left relative"
         >
           <blockquote className="text-neutral-800 italic text-lg md:text-xl leading-relaxed relative">
-            <span className="text-4xl text-neutral-400 font-serif mr-2 select-none align-top">“</span>
-            <span className="block pl-6">
-              Hanya pendidikan yang bisa menyelamatkan masa depan, tanpa pendidikan Indonesia tak mungkin bertahan.
-            </span>
+            Hanya pendidikan yang bisa menyelamatkan masa depan, tanpa pendidikan Indonesia tak mungkin bertahan.
           </blockquote>
-          <footer className="mt-4 text-right text-neutral-800 font-semibold relative">
-            <span className="absolute -top-3 right-0 text-4xl text-neutral-400 font-serif select-none">”</span>
+          <footer className="mt-4 text-right text-neutral-800 font-semibold">
             – Najwa Shihab
           </footer>
         </motion.figure>
