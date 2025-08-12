@@ -55,4 +55,11 @@ export const quizData = {
     { question: "Kata 'wedang' berarti?", options: ["Makanan", "Minuman", "Tidur", "Jalan"], correct: "Minuman", explanation: "'Wedang' berarti minuman." },
     { question: "Apa arti 'arep menyang pasar'?", options: ["Mau ke pasar", "Sedang di pasar", "Sudah dari pasar", "Tidak ke pasar"], correct: "Mau ke pasar", explanation: "'Arep menyang pasar' berarti mau ke pasar." },
   ],
+'seni': [
+  { question: "Seni rupa yang menggunakan media dua dimensi disebut?", options: ["Seni lukis", "Seni patung", "Seni kriya", "Seni teater"], correct: "Seni lukis", explanation: "Seni lukis adalah seni rupa dua dimensi yang menggunakan media seperti kanvas atau kertas." },
+  { question: "Alat utama yang digunakan dalam seni patung adalah?", options: ["Pahat", "Kuas", "Pensil", "Cetakan"], correct: "Pahat", explanation: "Pahat digunakan untuk membentuk dan mengukir patung." },
+  { question: "Seni tari biasanya diiringi oleh?", options: ["Lukisan", "Musik", "Patung", "Puisi"], correct: "Musik", explanation: "Seni tari biasanya diiringi musik agar gerakan selaras dengan irama." },
+  { question: "Teknik menggambar dengan menggunakan titik-titik disebut?", options: ["Arsir", "Pointilis", "Gradasi", "Lukis basah"], correct: "Pointilis", explanation: "Pointilis adalah teknik menggambar dengan titik-titik kecil." },
+  { question: "Batik termasuk dalam seni?", options: ["Seni kriya", "Seni lukis", "Seni teater", "Seni musik"], correct: "Seni kriya", explanation: "Batik termasuk seni kriya karena dibuat dengan keterampilan tangan." },
+],
 };

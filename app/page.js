@@ -39,6 +39,7 @@ const categories = [
   { key: 'sejarah', label: 'HISTORY' },
   { key: 'pancasila', label: 'PANCASILA' },
   { key: 'bahasa_jawa', label: 'JAWA' },
+  { key: 'seni', label: 'SENI' },
 ];
 
 export default function HomePage() {
