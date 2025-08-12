@@ -32,14 +32,14 @@ function Footer() {
 }
 
 const categories = [
-  { key: 'matematika', label: 'MATH', img: '/images/matematika.jpg' },
-  { key: 'english', label: 'ENGLISH', img: '/images/english.jpeg' },
-  { key: 'ipa', label: 'SCIENCE', img: '/images/ipa.jpg' },
-  { key: 'bahasa_indonesia', label: 'INDONESIA', img: '/images/ipa.jpg' },
-  { key: 'bahasa_jepang', label: 'JEPANG', img: '/images/matematika.jpg' },
-  { key: 'sejarah', label: 'HISTORY', img: '/images/english.jpeg' },
-  { key: 'pancasila', label: 'PANCASILA', img: '/images/ipa.jpg' },
-  { key: 'bahasa_jawa', label: 'JAWA', img: '/images/english.jpeg' },
+  { key: 'matematika', label: 'MATH' },
+  { key: 'english', label: 'ENGLISH' },
+  { key: 'ipa', label: 'SCIENCE' },
+  { key: 'bahasa_indonesia', label: 'INDONESIA' },
+  { key: 'bahasa_jepang', label: 'JEPANG'},
+  { key: 'sejarah', label: 'HISTORY' },
+  { key: 'pancasila', label: 'PANCASILA' },
+  { key: 'bahasa_jawa', label: 'JAWA' },
 ];
 
 export default function HomePage() {
