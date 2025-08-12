@@ -1,7 +1,6 @@
 'use client';
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { motion } from 'framer-motion';
 
 // Navbar Component
@@ -79,13 +78,13 @@ export default function HomePage() {
             transition={{ delay: 0.2, duration: 0.7 }}
             className="bg-white/80 border border-blue-200 rounded-xl shadow-lg px-8 py-6 mb-8 max-w-2xl mx-auto text-center relative"
           >
-          <blockquote className="text-blue-800 italic text-lg md:text-xl leading-relaxed relative">
-            Hanya pendidikan yang bisa menyelamatkan masa depan, tanpa pendidikan Indonesia tak mungkin bertahan.
-          </blockquote>
-          <footer className="mt-6 text-right text-blue-600 font-semibold">
-            – Najwa Shihab
-          </footer>
-        </motion.figure>
+            <blockquote className="text-blue-800 italic text-lg md:text-xl leading-relaxed">
+              Hanya pendidikan yang bisa menyelamatkan masa depan, tanpa pendidikan Indonesia tak mungkin bertahan.
+            </blockquote>
+            <footer className="mt-6 text-right text-blue-600 font-semibold">
+              – Najwa Shihab
+            </footer>
+          </motion.figure>
 
           <motion.p
             initial={{ opacity: 0 }}
@@ -96,29 +95,22 @@ export default function HomePage() {
             Pilih kategori kuis untuk mulai belajar:
           </motion.p>
 
-          {/* Kategori Section */}
+          {/* Kategori Section tanpa gambar */}
           <motion.div
             id="kategori"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.7 }}
-            className="grid gap-8 grid-cols-1 sm:grid-cols-3 mb-12"
+            className="grid gap-6 grid-cols-1 sm:grid-cols-3 mb-12"
             style={{ scrollMarginTop: '100px' }}
           >
             {categories.map((cat) => (
               <Link
                 key={cat.key}
                 href={`/${cat.key}`}
-                className="bg-white border border-blue-200 hover:border-blue-500 text-blue-800 py-8 px-6 rounded-2xl shadow-lg hover:shadow-2xl text-center transition-all flex flex-col items-center gap-2 hover:scale-105 focus:ring-2 focus:ring-blue-300 outline-none"
+                className="bg-white border border-blue-200 hover:border-blue-500 text-blue-800 py-6 px-4 rounded-2xl shadow-lg hover:shadow-2xl text-center transition-all flex items-center justify-center hover:scale-105 focus:ring-2 focus:ring-blue-300 outline-none"
               >
-                <Image
-                  src={cat.img}
-                  alt={cat.label}
-                  width={140}
-                  height={80}
-                  className="mb-4 rounded-[2.5rem] aspect-[2/1] object-cover border-4 border-blue-100 shadow"
-                />
-                <span className="mt-2 text-xl font-bold tracking-wide">{cat.label}</span>
+                <span className="text-xl font-bold tracking-wide">{cat.label}</span>
               </Link>
             ))}
           </motion.div>
