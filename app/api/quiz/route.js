@@ -1,4 +1,5 @@
-export const quizData = {
+export async function GET() {
+  const quizData = {
   'matematika': [
     { question: "5 + 7 = ?", options: ["11", "12", "13", "14"], correct: "12", explanation: "5 + 7 = 12" },
     { question: "10 × 2 = ?", options: ["20", "22", "18", "25"], correct: "20", explanation: "10 × 2 = 20" },
@@ -63,3 +64,8 @@ export const quizData = {
   { question: "Batik termasuk dalam seni?", options: ["Seni kriya", "Seni lukis", "Seni teater", "Seni musik"], correct: "Seni kriya", explanation: "Batik termasuk seni kriya karena dibuat dengan keterampilan tangan." },
 ],
 };
+
+  return new Response(JSON.stringify(quizData), {
+    headers: { 'Content-Type': 'application/json' },
+  });
+}
