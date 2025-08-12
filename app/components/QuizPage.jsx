@@ -33,7 +33,6 @@ function Navbar() {
           className="text-neutral-700 hover:text-blue-600 font-medium transition cursor-pointer"
         >
           <Link href="/#kategori">Kategori</Link>
-          Kategori
         </a>
         <a
           href="#tentang"
