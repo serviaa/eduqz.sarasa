@@ -6,11 +6,17 @@ import { motion } from 'framer-motion';
 // Navbar Component
 function Navbar() {
   return (
-    <nav className="w-full bg-white shadow-sm border-b border-neutral-200 py-3 px-6 flex items-center justify-between mb-8 fixed top-0 left-0 z-20">
+    <nav className="w-full bg-white shadow-sm border-b border-neutral-200 py-3 px-6 flex items-center justify-between fixed top-0 left-0 z-20">
+      {/* Logo */}
       <Link href="/" className="text-xl font-bold text-neutral-800 flex items-center gap-2">
         <span className="text-2xl">📝</span> eduqz.sarasa
       </Link>
-      <div className="text-neutral-500 text-sm font-semibold">Kuis Interaktif</div>
+      {/* Menu */}
+      <div className="flex items-center gap-6">
+        <Link href="/" className="text-neutral-700 hover:text-blue-600 font-medium transition">Home</Link>
+        <Link href="#kategori" className="text-neutral-700 hover:text-blue-600 font-medium transition">Kategori</Link>
+        <Link href="#tentang" className="text-neutral-700 hover:text-blue-600 font-medium transition">Tentang</Link>
+      </div>
     </nav>
   );
 }
@@ -70,6 +76,7 @@ export default function HomePage() {
           </motion.p>
 
           <motion.div
+            id="kategori"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.7 }}
@@ -79,7 +86,7 @@ export default function HomePage() {
               <Link
                 key={cat.key}
                 href={`/${cat.key}`}
-                className="bg-white border border-neutral-200 hover:border-neutral-400 text-neutral-800 py-8 px-6 rounded-2xl shadow-md hover:shadow-lg text-center transition-all flex flex-col items-center gap-2 hover:scale-105"
+                className="bg-white border border-neutral-200 hover:border-blue-400 text-neutral-800 py-8 px-6 rounded-2xl shadow-md hover:shadow-lg text-center transition-all flex flex-col items-center gap-2 hover:scale-105"
               >
                 <Image
                   src={cat.img}
@@ -94,6 +101,7 @@ export default function HomePage() {
           </motion.div>
 
           <motion.div
+            id="tentang"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.7 }}
