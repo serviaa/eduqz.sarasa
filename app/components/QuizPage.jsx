@@ -1,22 +1,30 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import confetti from 'canvas-confetti';
 
-// Navbar Component (smooth scroll + offset)
+// Navbar Component (smooth scroll + hash navigation)
 function Navbar() {
-  const handleScroll = (e, targetId) => {
-    e.preventDefault();
-    const element = document.getElementById(targetId);
-    if (element) {
-      const navbarHeight = 80; // tinggi navbar dalam px
-      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
-      const offsetPosition = elementPosition - navbarHeight;
+  const router = useRouter();
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth',
-      });
+  const handleScrollOrNavigate = (e, targetId) => {
+    e.preventDefault();
+    if (window.location.pathname === '/') {
+      // Sudah di halaman home → scroll
+      const element = document.getElementById(targetId);
+      if (element) {
+        const navbarHeight = 80;
+        const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+        const offsetPosition = elementPosition - navbarHeight;
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth',
+        });
+      }
+    } else {
+      // Masih di halaman lain → navigate ke home + hash
+      router.push(`/#${targetId}`);
     }
   };
 
@@ -28,18 +36,18 @@ function Navbar() {
       <div className="flex items-center gap-6">
         <Link href="/" className="text-neutral-700 hover:text-blue-600 font-medium transition">Home</Link>
         <a
-          href="#kategori"
-          onClick={(e) => handleScroll(e, 'kategori')}
+          href="/#kategori"
+          onClick={(e) => handleScrollOrNavigate(e, 'kategori')}
           className="text-neutral-700 hover:text-blue-600 font-medium transition cursor-pointer"
         >
-          <Link href="/#kategori">Kategori</Link>
+          Kategori
         </a>
         <a
-          href="#tentang"
-          onClick={(e) => handleScroll(e, 'tentang')}
+          href="/#tentang"
+          onClick={(e) => handleScrollOrNavigate(e, 'tentang')}
           className="text-neutral-700 hover:text-blue-600 font-medium transition cursor-pointer"
         >
-          <Link href="/#tentang">Tentang</Link>
+          Tentang
         </a>
       </div>
     </nav>
@@ -77,7 +85,6 @@ export default function QuizPage({ questions, category }) {
   const [startTime, setStartTime] = useState(Date.now());
   const [elapsed, setElapsed] = useState(0);
 
-  // Inisialisasi soal dan acak opsi jawaban
   useEffect(() => {
     const randomized = shuffleArray(questions).map((q) => ({
       ...q,
