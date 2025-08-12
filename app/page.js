@@ -4,16 +4,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import confetti from 'canvas-confetti';
 
-// Navbar Component (fixed navigation logic)
+// Navbar Component (simplified navigation)
 function Navbar() {
-  const router = useRouter();
-
-  const handleScrollOrNavigate = (e, targetId) => {
-    e.preventDefault();
-    // Selalu navigate ke home page dengan hash untuk semua link anchor
-    router.push(`/#${targetId}`);
-  };
-
   return (
     <nav className="w-full sticky top-0 left-0 z-30 bg-white/80 backdrop-blur border-b border-neutral-200 shadow-sm py-3 px-6 flex items-center justify-between">
       <Link href="/" className="text-xl font-bold text-blue-700 flex items-center gap-2">
@@ -21,20 +13,12 @@ function Navbar() {
       </Link>
       <div className="flex items-center gap-6">
         <Link href="/" className="text-neutral-700 hover:text-blue-600 font-medium transition">Home</Link>
-        <a
-          href="/#kategori"
-          onClick={(e) => handleScrollOrNavigate(e, 'kategori')}
-          className="text-neutral-700 hover:text-blue-600 font-medium transition cursor-pointer"
-        >
+        <Link href="/#kategori" className="text-neutral-700 hover:text-blue-600 font-medium transition">
           Kategori
-        </a>
-        <a
-          href="/#tentang"
-          onClick={(e) => handleScrollOrNavigate(e, 'tentang')}
-          className="text-neutral-700 hover:text-blue-600 font-medium transition cursor-pointer"
-        >
+        </Link>
+        <Link href="/#tentang" className="text-neutral-700 hover:text-blue-600 font-medium transition">
           Tentang
-        </a>
+        </Link>
       </div>
     </nav>
   );
