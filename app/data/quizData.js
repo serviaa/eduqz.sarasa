@@ -27,4 +27,32 @@ export const quizData = {
     { question: "Sinonim kata 'indah' adalah?", options: ["Cantik", "Buruk", "Jelek", "Rusak"], correct: "Cantik", explanation: "'Cantik' memiliki arti yang mirip dengan 'indah'." },
     { question: "Kalimat tanya diakhiri dengan tanda?", options: ["Titik", "Tanda seru", "Tanda tanya", "Koma"], correct: "Tanda tanya", explanation: "Kalimat tanya diakhiri dengan tanda tanya (?)" },
   ],
+  'bahasa_jepang': [
+    { question: "Bagaimana cara mengucapkan 'terima kasih' dalam bahasa Jepang?", options: ["Konnichiwa", "Arigatou", "Ohayou", "Sayonara"], correct: "Arigatou", explanation: "'Arigatou' berarti 'terima kasih'." },
+    { question: "Hiragana untuk 'a' adalah?", options: ["あ", "い", "う", "え"], correct: "あ", explanation: "Hiragana あ dibaca 'a'." },
+    { question: "Apa arti 'Sayonara'?", options: ["Halo", "Selamat tinggal", "Terima kasih", "Maaf"], correct: "Selamat tinggal", explanation: "'Sayonara' digunakan untuk mengucapkan selamat tinggal." },
+    { question: "Kata 'neko' berarti?", options: ["Anjing", "Kucing", "Burung", "Ikan"], correct: "Kucing", explanation: "'Neko' berarti kucing." },
+    { question: "Bagaimana mengucapkan 'selamat pagi' dalam bahasa Jepang?", options: ["Konnichiwa", "Ohayou", "Oyasuminasai", "Arigatou"], correct: "Ohayou", explanation: "'Ohayou' berarti selamat pagi." },
+  ],
+  'sejarah': [
+    { question: "Proklamasi kemerdekaan Indonesia dibacakan pada tanggal?", options: ["17 Agustus 1945", "20 Mei 1945", "1 Juni 1945", "28 Oktober 1945"], correct: "17 Agustus 1945", explanation: "Proklamasi dibacakan oleh Soekarno pada 17 Agustus 1945." },
+    { question: "Siapa presiden pertama Indonesia?", options: ["Soekarno", "Soeharto", "Habibie", "Megawati"], correct: "Soekarno", explanation: "Soekarno adalah presiden pertama Indonesia." },
+    { question: "Kerajaan Majapahit mencapai puncak kejayaan pada masa?", options: ["Gajah Mada", "Airlangga", "Hayam Wuruk", "Ken Arok"], correct: "Hayam Wuruk", explanation: "Majapahit jaya pada masa Hayam Wuruk." },
+    { question: "Sumpah Pemuda diikrarkan pada tahun?", options: ["1928", "1945", "1908", "1965"], correct: "1928", explanation: "Sumpah Pemuda diikrarkan pada 28 Oktober 1928." },
+    { question: "VOC adalah singkatan dari?", options: ["Vereenigde Oostindische Compagnie", "Verte Oostindische Company", "Vereenigde Oost Company", "Veren Oost Compagnie"], correct: "Vereenigde Oostindische Compagnie", explanation: "VOC adalah perusahaan dagang Belanda." },
+  ],
+  'pancasila': [
+    { question: "Sila pertama Pancasila adalah?", options: ["Ketuhanan Yang Maha Esa", "Kemanusiaan yang Adil dan Beradab", "Persatuan Indonesia", "Keadilan Sosial"], correct: "Ketuhanan Yang Maha Esa", explanation: "Sila pertama adalah Ketuhanan Yang Maha Esa." },
+    { question: "Jumlah sila dalam Pancasila adalah?", options: ["4", "5", "6", "7"], correct: "5", explanation: "Pancasila terdiri dari 5 sila." },
+    { question: "Sila ketiga Pancasila berbunyi?", options: ["Persatuan Indonesia", "Kerakyatan", "Keadilan Sosial", "Ketuhanan"], correct: "Persatuan Indonesia", explanation: "Sila ketiga adalah Persatuan Indonesia." },
+    { question: "Lambang sila kedua adalah?", options: ["Rantai Emas", "Bintang", "Pohon Beringin", "Padi dan Kapas"], correct: "Rantai Emas", explanation: "Sila kedua dilambangkan dengan rantai emas." },
+    { question: "Sila keempat melambangkan simbol?", options: ["Kepala Banteng", "Padi dan Kapas", "Bintang", "Pohon Beringin"], correct: "Kepala Banteng", explanation: "Kepala banteng adalah simbol sila keempat." },
+  ],
+  'bahasa_jawa': [
+    { question: "Apa arti 'matur nuwun'?", options: ["Selamat pagi", "Terima kasih", "Maaf", "Sampai jumpa"], correct: "Terima kasih", explanation: "'Matur nuwun' artinya terima kasih." },
+    { question: "Kata 'segawon' berarti?", options: ["Kucing", "Anjing", "Ayam", "Burung"], correct: "Anjing", explanation: "'Segawon' berarti anjing." },
+    { question: "Bagaimana mengucapkan 'selamat malam' dalam bahasa Jawa?", options: ["Sugeng enjing", "Sugeng dalu", "Sugeng sonten", "Sugeng rawuh"], correct: "Sugeng dalu", explanation: "'Sugeng dalu' berarti selamat malam." },
+    { question: "Kata 'wedang' berarti?", options: ["Makanan", "Minuman", "Tidur", "Jalan"], correct: "Minuman", explanation: "'Wedang' berarti minuman." },
+    { question: "Apa arti 'arep menyang pasar'?", options: ["Mau ke pasar", "Sedang di pasar", "Sudah dari pasar", "Tidak ke pasar"], correct: "Mau ke pasar", explanation: "'Arep menyang pasar' berarti mau ke pasar." },
+  ],
 };

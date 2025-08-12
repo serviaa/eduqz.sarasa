@@ -36,6 +36,10 @@ const categories = [
   { key: 'english', label: 'ENGLISH', img: '/images/english.jpeg' },
   { key: 'ipa', label: 'SCIENCE', img: '/images/ipa.jpg' },
   { key: 'bahasa_indonesia', label: 'INDONESIA', img: '/images/ipa.jpg' },
+  { key: 'bahasa_jepang', label: 'JEPANG', img: '/images/matematika.jpg' },
+  { key: 'sejarah', label: 'HISTORY', img: '/images/english.jpeg' },
+  { key: 'pancasila', label: 'PANCASILA', img: '/images/ipa.jpg' },
+  { key: 'bahasa_jawa', label: 'JAWA', img: '/images/english.jpeg' },
 ];
 
 export default function HomePage() {
