@@ -1,27 +1,25 @@
 'use client';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
-import { motion } from 'framer-motion';
+import confetti from 'canvas-confetti';
 
-// Navbar Component
+// Navbar Component (seperti halaman utama)
 function Navbar() {
   return (
     <nav className="w-full sticky top-0 left-0 z-30 bg-white/80 backdrop-blur border-b border-neutral-200 shadow-sm py-3 px-6 flex items-center justify-between">
-      {/* Logo */}
       <Link href="/" className="text-xl font-bold text-blue-700 flex items-center gap-2">
         <span className="text-2xl">📝</span> eduqz.sarasa
       </Link>
-      {/* Menu */}
       <div className="flex items-center gap-6">
-        <a href="#" className="text-neutral-700 hover:text-blue-600 font-medium transition">Home</a>
-        <a href="#kategori" className="text-neutral-700 hover:text-blue-600 font-medium transition">Kategori</a>
-        <a href="#tentang" className="text-neutral-700 hover:text-blue-600 font-medium transition">Tentang</a>
+        <Link href="/" className="text-neutral-700 hover:text-blue-600 font-medium transition">Home</Link>
+        <Link href="/#kategori" className="text-neutral-700 hover:text-blue-600 font-medium transition">Kategori</Link>
+        <Link href="/#tentang" className="text-neutral-700 hover:text-blue-600 font-medium transition">Tentang</Link>
       </div>
     </nav>
   );
 }
 
-// Footer Component
+// Footer Component (sama seperti sebelumnya)
 function Footer() {
   return (
     <footer className="w-full bg-white border-t border-neutral-200 py-4 px-6 text-center text-neutral-500 text-sm mt-12">
@@ -30,117 +28,223 @@ function Footer() {
   );
 }
 
-const categories = [
-  { key: 'matematika', label: 'MATH', img: '/images/matematika.jpg' },
-  { key: 'english', label: 'ENGLISH', img: '/images/english.jpeg' },
-  { key: 'ipa', label: 'SCIENCE', img: '/images/ipa.jpg' },
-];
+// Fungsi untuk mengacak array
+function shuffleArray(array) {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
 
-export default function HomePage() {
-  // Smooth scroll with offset for anchor links
-  // (works for most browsers)
-  // You can remove this if you use a scroll library
-  React.useEffect(() => {
-    const handleAnchorClick = (e) => {
-      if (e.target.tagName === 'A' && e.target.hash) {
-        const el = document.querySelector(e.target.hash);
-        if (el) {
-          e.preventDefault();
-          const yOffset = -80; // offset for sticky navbar
-          const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
-          window.scrollTo({ top: y, behavior: 'smooth' });
-        }
+export default function QuizPage({ questions, category }) {
+  const [shuffledQuestions, setShuffledQuestions] = useState([]);
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [score, setScore] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState('');
+  const [showScore, setShowScore] = useState(false);
+  const [showExplanation, setShowExplanation] = useState(false);
+  const [correctCount, setCorrectCount] = useState(0);
+  const [wrongCount, setWrongCount] = useState(0);
+  const [startTime, setStartTime] = useState(Date.now());
+  const [elapsed, setElapsed] = useState(0);
+
+  // Inisialisasi soal dan acak opsi jawaban
+  useEffect(() => {
+    const randomized = shuffleArray(questions).map((q) => ({
+      ...q,
+      options: shuffleArray(q.options),
+    }));
+    setShuffledQuestions(randomized);
+  }, [questions]);
+
+  useEffect(() => {
+    if (!showScore) {
+      const timer = setInterval(() => {
+        setElapsed(Math.floor((Date.now() - startTime) / 1000));
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [showScore, startTime]);
+
+  if (shuffledQuestions.length === 0) return <div>Loading...</div>;
+
+  const handleAnswer = () => {
+    if (!selectedAnswer) return alert('Pilih jawaban!');
+    const isCorrect = selectedAnswer === shuffledQuestions[currentQuestion].correct;
+
+    if (isCorrect) {
+      confetti({ particleCount: 100, spread: 100, origin: { y: 0.6 } });
+      setScore((prev) => prev + 1);
+      setCorrectCount((prev) => prev + 1);
+
+      if (currentQuestion + 1 === shuffledQuestions.length) {
+        setShowScore(true);
+      } else {
+        setTimeout(() => {
+          setSelectedAnswer('');
+          setCurrentQuestion((prev) => prev + 1);
+        }, 1000);
       }
-    };
-    document.addEventListener('click', handleAnchorClick);
-    return () => document.removeEventListener('click', handleAnchorClick);
-  }, []);
+    } else {
+      setWrongCount((prev) => prev + 1);
+      setShowExplanation(true);
+    }
+  };
+
+  const handleNext = () => {
+    setSelectedAnswer('');
+    setShowExplanation(false);
+    const next = currentQuestion + 1;
+    if (next < shuffledQuestions.length) {
+      setCurrentQuestion(next);
+    } else {
+      setShowScore(true);
+    }
+  };
+
+  const formatTime = (sec) => {
+    const m = Math.floor(sec / 60);
+    const s = sec % 60;
+    return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+  };
+
+  const progressPercent = Math.round(((currentQuestion + (showScore ? 1 : 0)) / shuffledQuestions.length) * 100);
+  const scorePercent = Math.round((score / shuffledQuestions.length) * 100);
+
+  const ulangiKuis = () => {
+    setCurrentQuestion(0);
+    setScore(0);
+    setSelectedAnswer('');
+    setShowScore(false);
+    setShowExplanation(false);
+    setCorrectCount(0);
+    setWrongCount(0);
+    setStartTime(Date.now());
+    setElapsed(0);
+    const randomized = shuffleArray(questions).map((q) => ({
+      ...q,
+      options: shuffleArray(q.options),
+    }));
+    setShuffledQuestions(randomized);
+  };
+
+  const current = shuffledQuestions[currentQuestion];
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-100 via-white to-blue-200 font-sans">
       <Navbar />
-      <main className="flex flex-1 flex-col items-center justify-center p-6 pt-24">
-        <div className="w-full max-w-3xl mx-auto text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="text-4xl md:text-5xl font-bold text-blue-700 mb-6 flex items-center justify-center gap-2"
-          >
-            sarasa learn <span className="text-5xl">✨</span>
-          </motion.h1>
+      <main id="quiz" className="flex flex-1 items-center justify-center p-6 pt-24">
+        <div className="bg-white rounded-xl shadow-xl p-8 max-w-md w-full border border-gray-200">
+          <h1 className="text-2xl font-bold text-blue-700 mb-4 text-center flex justify-center items-center gap-2">
+            <span className="text-2xl">📝</span> {category.replace('-', ' ').toUpperCase()}
+          </h1>
 
-          {/* QUOTE */}
-          <motion.figure
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.7 }}
-            className="bg-white/80 border border-blue-200 rounded-xl shadow-lg px-8 py-6 mb-8 max-w-2xl mx-auto text-center relative"
-          >
-            <blockquote className="text-blue-800 italic text-lg md:text-xl leading-relaxed relative">
-              <span className="text-3xl text-blue-400 font-serif absolute left-0 -top-2 select-none">“</span>
-              Hanya pendidikan yang bisa menyelamatkan masa depan, tanpa pendidikan Indonesia tak mungkin bertahan.
-              <span className="text-3xl text-blue-400 font-serif absolute right-0 -bottom-2 select-none">”</span>
-            </blockquote>
-            <footer className="mt-6 text-right text-blue-600 font-semibold">
-              – Najwa Shihab
-            </footer>
-          </motion.figure>
+          <div className="flex justify-between mb-2 text-sm text-blue-700 font-medium">
+            <div>
+              Soal {showScore ? shuffledQuestions.length : currentQuestion + 1} dari {shuffledQuestions.length}
+              {!showScore && <div className="text-blue-500 text-xs mt-1">Waktu: {formatTime(elapsed)}</div>}
+            </div>
+            <div className="text-right">Skor: {score}</div>
+          </div>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.7 }}
-            className="text-lg text-blue-700 mb-8 font-medium"
-          >
-            Pilih kategori kuis untuk mulai belajar:
-          </motion.p>
+          <div className="w-full h-2 bg-blue-200 rounded-full overflow-hidden mb-6">
+            <div
+              className="h-2 bg-blue-700 rounded-full transition-all duration-500"
+              style={{ width: `${progressPercent}%` }}
+            />
+          </div>
 
-          {/* Kategori Section */}
-          <motion.div
-            id="kategori"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.7 }}
-            className="grid gap-8 grid-cols-1 sm:grid-cols-3 mb-12"
-            style={{ scrollMarginTop: '100px' }} // agar tidak tertutup navbar
-          >
-            {categories.map((cat) => (
-              <Link
-                key={cat.key}
-                href={`/${cat.key}`}
-                className="bg-white border border-blue-200 hover:border-blue-500 text-blue-800 py-8 px-6 rounded-2xl shadow-lg hover:shadow-2xl text-center transition-all flex flex-col items-center gap-2 hover:scale-105 focus:ring-2 focus:ring-blue-300 outline-none"
+          {showScore ? (
+            <div className="text-center">
+              <p className="text-blue-800 font-semibold text-lg mb-4 flex justify-center items-center gap-2">
+                Kuis Selesai! <span>🎉</span>
+              </p>
+              <div className="bg-blue-100 rounded-md py-6 mb-6">
+                <p className="text-3xl font-bold text-blue-800">{score}/{shuffledQuestions.length}</p>
+                <p className="text-blue-600">Skor Anda: {scorePercent}%</p>
+              </div>
+              <p className="mb-6 text-blue-700 font-semibold">
+                Waktu pengerjaan: <span className="font-bold">{formatTime(elapsed)}</span>
+              </p>
+              <button
+                onClick={ulangiKuis}
+                className="bg-blue-700 text-white rounded-md py-3 px-6 mb-3 w-full hover:bg-blue-800 transition"
               >
-                <Image
-                  src={cat.img}
-                  alt={cat.label}
-                  width={140}
-                  height={80}
-                  className="mb-4 rounded-[2.5rem] aspect-[2/1] object-cover border-4 border-blue-100 shadow"
-                />
-                <span className="mt-2 text-xl font-bold tracking-wide">{cat.label}</span>
+                Ulangi Kuis
+              </button>
+              <Link
+                href="/"
+                className="bg-blue-700 text-white rounded-md py-3 px-6 w-full block hover:bg-blue-800 transition text-center"
+              >
+                Kembali ke Home
               </Link>
-            ))}
-          </motion.div>
+            </div>
+          ) : (
+            <>
+              <div className="mb-6 text-center text-blue-800 font-semibold text-lg">
+                {current.question}
+              </div>
+              <div key={currentQuestion} className="space-y-3 mb-6">
+                {current.options.map((opt) => (
+                  <label
+                    key={opt}
+                    className={`flex items-center gap-3 p-4 border rounded-full cursor-pointer transition-all
+                      ${selectedAnswer === opt ? 'bg-blue-50 border-blue-500 scale-105' : 'border-blue-200'}
+                      hover:bg-blue-50 hover:border-blue-400`}
+                  >
+                    <span
+                      className={`w-6 h-6 flex items-center justify-center rounded-full border-2
+                        ${selectedAnswer === opt ? 'border-blue-700 bg-blue-700' : 'border-blue-200 bg-white'}
+                        transition-all`}
+                    >
+                      {selectedAnswer === opt && (
+                        <span className="w-3 h-3 bg-white rounded-full block"></span>
+                      )}
+                    </span>
+                    <input
+                      type="radio"
+                      name="answer"
+                      value={opt}
+                      checked={selectedAnswer === opt}
+                      onChange={() => setSelectedAnswer(opt)}
+                      className="sr-only"
+                    />
+                    <span className="text-blue-800">{opt}</span>
+                  </label>
+                ))}
+              </div>
 
-          {/* Tentang Section */}
-          <motion.div
-            id="tentang"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.7 }}
-            className="bg-white/90 border border-blue-100 rounded-xl p-6 shadow text-center max-w-xl mx-auto"
-            style={{ scrollMarginTop: '100px' }} // agar tidak tertutup navbar
-          >
-            <h2 className="text-xl font-bold text-blue-700 mb-4">
-              Kenapa belajar di sini?
-            </h2>
-            <ul className="list-disc list-inside text-blue-700 text-left mx-auto max-w-md space-y-2">
-              <li>Penjelasan setiap jawaban sehingga mudah dipahami</li>
-              <li>Tampilan menarik dan mudah digunakan</li>
-              <li>Belajar jadi lebih seru dan menyenangkan!</li>
-            </ul>
-          </motion.div>
+              {showExplanation && !showScore && (
+                <div className="text-center">
+                  <p
+                    className={`text-lg font-semibold mb-3 ${
+                      selectedAnswer === current.correct ? 'text-green-600' : 'text-red-500'
+                    }`}
+                  >
+                    {selectedAnswer === current.correct ? 'Benar!' : 'Salah'}
+                  </p>
+                  <p className="mb-6 text-blue-700">{current.explanation}</p>
+                  <button
+                    onClick={handleNext}
+                    className="bg-blue-700 text-white py-3 px-6 rounded-md hover:bg-blue-800 transition"
+                  >
+                    Soal Selanjutnya
+                  </button>
+                </div>
+              )}
+
+              {!showExplanation && !showScore && (
+                <button
+                  onClick={handleAnswer}
+                  className="bg-blue-700 text-white py-3 px-6 rounded-md w-full hover:bg-blue-800 transition font-semibold"
+                >
+                  Jawab
+                </button>
+              )}
+            </>
+          )}
         </div>
       </main>
       <Footer />
