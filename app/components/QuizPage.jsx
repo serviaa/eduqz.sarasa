@@ -35,13 +35,9 @@ function Navbar() {
       </Link>
       <div className="flex items-center gap-6">
         <Link href="/" className="text-neutral-700 hover:text-blue-600 font-medium transition">Home</Link>
-        <a
-          href="/#kategori"
-          onClick={(e) => handleScrollOrNavigate(e, 'kategori')}
-          className="text-neutral-700 hover:text-blue-600 font-medium transition cursor-pointer"
-        >
-          Kategori
-        </a>
+        <Link href="/#kategori">
+          <span className="cursor-pointer">Kategori</span>
+        </Link>
         <a
           href="/#tentang"
           onClick={(e) => handleScrollOrNavigate(e, 'tentang')}
