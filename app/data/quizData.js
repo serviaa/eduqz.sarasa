@@ -20,4 +20,11 @@ export const quizData = {
     { question: "Alat pernapasan ikan?", options: ["Paru-paru", "Insang", "Kulit", "Trakea"], correct: "Insang", explanation: "Ikan bernapas dengan insang." },
     { question: "Proses perubahan air menjadi uap disebut?", options: ["Kondensasi", "Evaporasi", "Presipitasi", "Infiltrasi"], correct: "Evaporasi", explanation: "Evaporasi adalah perubahan air menjadi uap." },
   ],
+  'bahasa_indonesia': [
+    { question: "Antonim dari kata 'besar' adalah?", options: ["Kecil", "Tinggi", "Panjang", "Lebar"], correct: "Kecil", explanation: "'Kecil' adalah kebalikan dari 'besar'." },
+    { question: "Kata 'berlari' termasuk jenis kata?", options: ["Kata benda", "Kata kerja", "Kata sifat", "Kata keterangan"], correct: "Kata kerja", explanation: "'Berlari' adalah kata kerja karena menunjukkan aktivitas." },
+    { question: "Kalimat yang menggunakan huruf kapital dengan benar adalah?", options: ["saya pergi ke jakarta", "Saya pergi ke Jakarta", "saya Pergi ke jakarta", "Saya Pergi Ke jakarta"], correct: "Saya pergi ke Jakarta", explanation: "Huruf kapital digunakan di awal kalimat dan untuk nama tempat." },
+    { question: "Sinonim kata 'indah' adalah?", options: ["Cantik", "Buruk", "Jelek", "Rusak"], correct: "Cantik", explanation: "'Cantik' memiliki arti yang mirip dengan 'indah'." },
+    { question: "Kalimat tanya diakhiri dengan tanda?", options: ["Titik", "Tanda seru", "Tanda tanya", "Koma"], correct: "Tanda tanya", explanation: "Kalimat tanya diakhiri dengan tanda tanya (?)" },
+  ],
 };
