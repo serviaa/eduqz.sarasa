@@ -1,4 +1,5 @@
 'use client';
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
@@ -37,18 +38,14 @@ const categories = [
 ];
 
 export default function HomePage() {
-  // Smooth scroll with offset for anchor links
-  // (works for most browsers)
-  // You can remove this if you use a scroll library
+  // Smooth scroll ke tengah viewport untuk anchor links
   React.useEffect(() => {
     const handleAnchorClick = (e) => {
       if (e.target.tagName === 'A' && e.target.hash) {
         const el = document.querySelector(e.target.hash);
         if (el) {
           e.preventDefault();
-          const yOffset = -80; // offset for sticky navbar
-          const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
-          window.scrollTo({ top: y, behavior: 'smooth' });
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
       }
     };
@@ -103,7 +100,7 @@ export default function HomePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.7 }}
             className="grid gap-8 grid-cols-1 sm:grid-cols-3 mb-12"
-            style={{ scrollMarginTop: '100px' }} // agar tidak tertutup navbar
+            style={{ scrollMarginTop: '100px' }}
           >
             {categories.map((cat) => (
               <Link
@@ -130,7 +127,7 @@ export default function HomePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.7 }}
             className="bg-white/90 border border-blue-100 rounded-xl p-6 shadow text-center max-w-xl mx-auto"
-            style={{ scrollMarginTop: '100px' }} // agar tidak tertutup navbar
+            style={{ scrollMarginTop: '100px' }}
           >
             <h2 className="text-xl font-bold text-blue-700 mb-4">
               Kenapa belajar di sini?
