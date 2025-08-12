@@ -35,7 +35,7 @@ const categories = [
   { key: 'matematika', label: 'MATH', img: '/images/matematika.jpg' },
   { key: 'english', label: 'ENGLISH', img: '/images/english.jpeg' },
   { key: 'ipa', label: 'SCIENCE', img: '/images/ipa.jpg' },
-  { key: 'bahasa_indonesia', label: 'ind leangue', img: '/images/ipa.jpg' },
+  { key: 'bahasa_indonesia', label: 'INDONESIA', img: '/images/ipa.jpg' },
 ];
 
 export default function HomePage() {
