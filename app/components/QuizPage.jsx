@@ -39,7 +39,7 @@ function Navbar() {
           onClick={(e) => handleScroll(e, 'tentang')}
           className="text-neutral-700 hover:text-blue-600 font-medium transition cursor-pointer"
         >
-          Tentang
+          <Link href="/#tentang">Tentang</Link>
         </a>
       </div>
     </nav>
