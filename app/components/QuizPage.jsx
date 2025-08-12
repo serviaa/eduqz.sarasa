@@ -3,8 +3,23 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import confetti from 'canvas-confetti';
 
-// Navbar Component (seperti halaman utama)
+// Navbar Component (smooth scroll + offset)
 function Navbar() {
+  const handleScroll = (e, targetId) => {
+    e.preventDefault();
+    const element = document.getElementById(targetId);
+    if (element) {
+      const navbarHeight = 80; // tinggi navbar dalam px
+      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+      const offsetPosition = elementPosition - navbarHeight;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth',
+      });
+    }
+  };
+
   return (
     <nav className="w-full sticky top-0 left-0 z-30 bg-white/80 backdrop-blur border-b border-neutral-200 shadow-sm py-3 px-6 flex items-center justify-between">
       <Link href="/" className="text-xl font-bold text-blue-700 flex items-center gap-2">
@@ -12,14 +27,26 @@ function Navbar() {
       </Link>
       <div className="flex items-center gap-6">
         <Link href="/" className="text-neutral-700 hover:text-blue-600 font-medium transition">Home</Link>
-        <Link href="/#kategori" className="text-neutral-700 hover:text-blue-600 font-medium transition">Kategori</Link>
-        <Link href="/#tentang" className="text-neutral-700 hover:text-blue-600 font-medium transition">Tentang</Link>
+        <a
+          href="#kategori"
+          onClick={(e) => handleScroll(e, 'kategori')}
+          className="text-neutral-700 hover:text-blue-600 font-medium transition cursor-pointer"
+        >
+          Kategori
+        </a>
+        <a
+          href="#tentang"
+          onClick={(e) => handleScroll(e, 'tentang')}
+          className="text-neutral-700 hover:text-blue-600 font-medium transition cursor-pointer"
+        >
+          Tentang
+        </a>
       </div>
     </nav>
   );
 }
 
-// Footer Component (sama seperti sebelumnya)
+// Footer Component
 function Footer() {
   return (
     <footer className="w-full bg-white border-t border-neutral-200 py-4 px-6 text-center text-neutral-500 text-sm mt-12">
