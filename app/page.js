@@ -74,15 +74,13 @@ export default function HomePage() {
             transition={{ delay: 0.2, duration: 0.7 }}
             className="bg-white/80 border border-blue-200 rounded-xl shadow-lg px-8 py-6 mb-8 max-w-2xl mx-auto text-center relative"
           >
-            <blockquote className="text-blue-800 italic text-lg md:text-xl leading-relaxed relative">
-              <span className="text-3xl text-blue-400 font-serif absolute left-0 -top-2 select-none">“</span>
-              Hanya pendidikan yang bisa menyelamatkan masa depan, tanpa pendidikan Indonesia tak mungkin bertahan.
-              <span className="text-3xl text-blue-400 font-serif absolute right-0 -bottom-2 select-none">”</span>
-            </blockquote>
-            <footer className="mt-6 text-right text-blue-600 font-semibold">
-              – Najwa Shihab
-            </footer>
-          </motion.figure>
+          <blockquote className="text-blue-800 italic text-lg md:text-xl leading-relaxed relative">
+            Hanya pendidikan yang bisa menyelamatkan masa depan, tanpa pendidikan Indonesia tak mungkin bertahan.
+          </blockquote>
+          <footer className="mt-6 text-right text-blue-600 font-semibold">
+            – Najwa Shihab
+          </footer>
+        </motion.figure>
 
           <motion.p
             initial={{ opacity: 0 }}
