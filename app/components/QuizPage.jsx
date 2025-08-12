@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import confetti from 'canvas-confetti';
 
-// Navbar Component (sama seperti sebelumnya)
+// Navbar Component (seperti halaman utama)
 function Navbar() {
   return (
     <nav className="w-full sticky top-0 left-0 z-30 bg-white/80 backdrop-blur border-b border-neutral-200 shadow-sm py-3 px-6 flex items-center justify-between">
@@ -12,7 +12,8 @@ function Navbar() {
       </Link>
       <div className="flex items-center gap-6">
         <Link href="/" className="text-neutral-700 hover:text-blue-600 font-medium transition">Home</Link>
-        <a href="#quiz" className="text-neutral-700 hover:text-blue-600 font-medium transition">Quiz</a>
+        <Link href="/#kategori" className="text-neutral-700 hover:text-blue-600 font-medium transition">Kategori</Link>
+        <Link href="/#tentang" className="text-neutral-700 hover:text-blue-600 font-medium transition">Tentang</Link>
       </div>
     </nav>
   );
