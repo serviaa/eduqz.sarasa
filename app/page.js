@@ -52,11 +52,12 @@ export default function HomePage() {
     return () => document.removeEventListener('click', handleAnchorClick);
   }, []);
 
-  // Nama input logic
+  // State untuk nama dan loading
   const [name, setName] = useState("");
   const [isNameEntered, setIsNameEntered] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // Handler submit nama
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name.trim()) {
@@ -64,10 +65,9 @@ export default function HomePage() {
       return;
     }
     setLoading(true);
-    // Insert nama ke tabel users
     const { data, error } = await supabase
       .from("users")
-      .insert([{ username: name }])
+      .insert([{ name: name }]) // pastikan kolom di DB bernama "name"
       .select()
       .single();
 
@@ -76,7 +76,7 @@ export default function HomePage() {
       console.error(error);
       alert("Gagal menyimpan nama!");
     } else {
-      localStorage.setItem("userId", data.id_user);
+      localStorage.setItem("userId", data.id); // ganti sesuai PK
       setIsNameEntered(true);
     }
   };
