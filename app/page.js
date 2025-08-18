@@ -1,11 +1,38 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { supabase } from "@/lib/supabaseClient";
 
-// ...Navbar & Footer...
+// ---------------- Navbar ----------------
+function Navbar() {
+  return (
+    <nav className="fixed top-0 left-0 w-full bg-white/90 backdrop-blur border-b border-blue-200 z-50 shadow-sm">
+      <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+        <Link href="/" className="text-xl font-bold text-blue-700">
+          Sarasa Learn ✨
+        </Link>
+        <div className="flex gap-6">
+          <a href="#kategori" className="text-blue-600 hover:text-blue-800">Kategori</a>
+          <a href="#tentang" className="text-blue-600 hover:text-blue-800">Tentang</a>
+        </div>
+      </div>
+    </nav>
+  );
+}
 
+// ---------------- Footer ----------------
+function Footer() {
+  return (
+    <footer className="bg-white/90 border-t border-blue-200 text-center py-4 mt-10">
+      <p className="text-blue-600 text-sm">
+        © {new Date().getFullYear()} Sarasa Learn. Dibuat dengan ❤️ untuk belajar.
+      </p>
+    </footer>
+  );
+}
+
+// ---------------- Categories ----------------
 const categories = [
   { key: 'matematika', label: 'MATH' },
   { key: 'english', label: 'ENGLISH' },
@@ -13,9 +40,10 @@ const categories = [
   { key: 'bahasa_indonesia', label: 'INDONESIA' }
 ];
 
+// ---------------- HomePage ----------------
 export default function HomePage() {
-  // Smooth scroll ke tengah viewport untuk anchor links
-  React.useEffect(() => {
+  // Smooth scroll
+  useEffect(() => {
     const handleAnchorClick = (e) => {
       if (e.target.tagName === 'A' && e.target.hash) {
         const el = document.querySelector(e.target.hash);
@@ -29,16 +57,14 @@ export default function HomePage() {
     return () => document.removeEventListener('click', handleAnchorClick);
   }, []);
 
-  // State untuk nama dan loading
+  // State
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const [isNameEntered, setIsNameEntered] = useState(false);
-
-  // State untuk progress
   const [progress, setProgress] = useState([]);
 
-  // Ambil nama dari localStorage saat komponen mount
-  React.useEffect(() => {
+  // Ambil nama dari localStorage
+  useEffect(() => {
     const savedName = localStorage.getItem("userName");
     const savedUserId = localStorage.getItem("userId");
     if (savedName && savedUserId) {
@@ -47,8 +73,8 @@ export default function HomePage() {
     }
   }, []);
 
-  // Ambil progress dari database saat user sudah login
-  React.useEffect(() => {
+  // Ambil progress dari database
+  useEffect(() => {
     const userId = localStorage.getItem("userId");
     if (userId) {
       supabase
@@ -64,28 +90,23 @@ export default function HomePage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!name.trim()) {
       alert("Nama wajib diisi");
       return;
     }
-
     setLoading(true);
-
     const { data, error } = await supabase
       .from("users")
       .insert([{ nama: name }])
       .select()
       .single();
-
     setLoading(false);
-
     if (error) {
       console.error("Supabase Error:", error);
-      alert("Gagal menyimpan nama! Lihat console untuk detail.");
+      alert("Gagal menyimpan nama!");
     } else {
-      localStorage.setItem("userId", data.id_user); // pk di tabel kamu
-      localStorage.setItem("userName", name); // simpan nama juga
+      localStorage.setItem("userId", data.id_user);
+      localStorage.setItem("userName", name);
       setIsNameEntered(true);
     }
   };
@@ -101,7 +122,7 @@ export default function HomePage() {
             transition={{ duration: 0.7 }}
             className="text-4xl md:text-5xl font-bold text-blue-700 mb-6 flex items-center justify-center gap-2"
           >
-            sarasa learn <span className="text-5xl">✨</span>
+            Sarasa Learn <span className="text-5xl">✨</span>
           </motion.h1>
 
           {/* QUOTE */}
@@ -121,7 +142,7 @@ export default function HomePage() {
             </footer>
           </motion.figure>
 
-          {/* Nama Input Section */}
+          {/* Input Nama */}
           {!isNameEntered ? (
             <form
               onSubmit={handleSubmit}
@@ -153,6 +174,7 @@ export default function HomePage() {
             </div>
           )}
 
+          {/* Kategori */}
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -162,7 +184,6 @@ export default function HomePage() {
             Pilih kategori kuis untuk mulai belajar:
           </motion.p>
 
-          {/* Kategori Section */}
           <motion.div
             id="kategori"
             initial={{ opacity: 0, y: 20 }}
@@ -176,14 +197,13 @@ export default function HomePage() {
                 href={isNameEntered ? `/${cat.key}` : "#"}
                 className={`bg-white border border-blue-200 hover:border-blue-500 text-blue-800 py-3 px-2 rounded-xl shadow hover:shadow-lg text-center transition-all flex items-center justify-center hover:scale-105 focus:ring-2 focus:ring-blue-300 outline-none text-base font-bold
                   ${!isNameEntered ? "opacity-50 pointer-events-none" : ""}`}
-                style={{ minWidth: 0 }}
               >
                 <span>{cat.label}</span>
               </Link>
             ))}
           </motion.div>
 
-          {/* Progress Section - di bawah kategori */}
+          {/* Progress */}
           {isNameEntered && (
             <div className="mb-8">
               <h3 className="text-lg font-bold text-blue-700 mb-2">Progress Anda:</h3>
@@ -201,7 +221,7 @@ export default function HomePage() {
             </div>
           )}
 
-          {/* Tentang Section */}
+          {/* Tentang */}
           <motion.div
             id="tentang"
             initial={{ opacity: 0, y: 20 }}
