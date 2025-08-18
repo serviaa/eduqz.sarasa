@@ -1,17 +1,16 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { supabase } from "@/lib/supabaseClient";
 
 // Navbar Component
 function Navbar() {
   return (
     <nav className="w-full sticky top-0 left-0 z-30 bg-white/80 backdrop-blur border-b border-neutral-200 shadow-sm py-3 px-6 flex items-center justify-between">
-      {/* Logo */}
       <Link href="/" className="text-xl font-bold text-blue-700 flex items-center gap-2">
         <span className="text-2xl">📝</span> eduqz.sarasa
       </Link>
-      {/* Menu */}
       <div className="flex items-center gap-6">
         <a href="#" className="text-neutral-700 hover:text-blue-600 font-medium transition">Home</a>
         <a href="#kategori" className="text-neutral-700 hover:text-blue-600 font-medium transition">Kategori</a>
@@ -53,6 +52,35 @@ export default function HomePage() {
     return () => document.removeEventListener('click', handleAnchorClick);
   }, []);
 
+  // Nama input logic
+  const [name, setName] = useState("");
+  const [isNameEntered, setIsNameEntered] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!name.trim()) {
+      alert("Nama wajib diisi");
+      return;
+    }
+    setLoading(true);
+    // Insert nama ke tabel users
+    const { data, error } = await supabase
+      .from("users")
+      .insert([{ username: name }])
+      .select()
+      .single();
+
+    setLoading(false);
+    if (error) {
+      console.error(error);
+      alert("Gagal menyimpan nama!");
+    } else {
+      localStorage.setItem("userId", data.id_user);
+      setIsNameEntered(true);
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-100 via-white to-blue-200 font-sans">
       <Navbar />
@@ -74,13 +102,47 @@ export default function HomePage() {
             transition={{ delay: 0.2, duration: 0.7 }}
             className="bg-white/80 border border-blue-200 rounded-xl shadow-lg px-8 py-6 mb-8 max-w-2xl mx-auto text-center relative"
           >
-            <blockquote className="text-blue-800 italic text-lg md:text-xl leading-relaxed">
+            <blockquote className="text-blue-800 italic text-lg md:text-xl leading-relaxed relative">
+              <span className="text-3xl text-blue-400 font-serif absolute left-0 -top-2 select-none">“</span>
               Hanya pendidikan yang bisa menyelamatkan masa depan, tanpa pendidikan Indonesia tak mungkin bertahan.
+              <span className="text-3xl text-blue-400 font-serif absolute right-0 -bottom-2 select-none">”</span>
             </blockquote>
             <footer className="mt-6 text-right text-blue-600 font-semibold">
               – Najwa Shihab
             </footer>
           </motion.figure>
+
+          {/* Nama Input Section */}
+          {!isNameEntered ? (
+            <form
+              onSubmit={handleSubmit}
+              className="bg-white p-6 rounded-2xl shadow-md w-full max-w-sm mx-auto mb-8"
+            >
+              <h1 className="text-xl font-bold mb-4">Masukkan Nama Anda</h1>
+              <input
+                type="text"
+                placeholder="Nama lengkap"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="border w-full p-2 rounded-lg mb-4"
+                disabled={loading}
+              />
+              <button
+                type="submit"
+                className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg"
+                disabled={loading}
+              >
+                {loading ? "Menyimpan..." : "Mulai"}
+              </button>
+            </form>
+          ) : (
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-semibold">Halo, {name}!</h2>
+              <p className="mt-2 text-blue-700">
+                Silakan pilih kategori kuis di bawah ini 🚀
+              </p>
+            </div>
+          )}
 
           <motion.p
             initial={{ opacity: 0 }}
@@ -91,7 +153,7 @@ export default function HomePage() {
             Pilih kategori kuis untuk mulai belajar:
           </motion.p>
 
-          {/* Kategori Section tanpa gambar */}
+          {/* Kategori Section */}
           <motion.div
             id="kategori"
             initial={{ opacity: 0, y: 20 }}
@@ -102,8 +164,9 @@ export default function HomePage() {
             {categories.map((cat) => (
               <Link
                 key={cat.key}
-                href={`/${cat.key}`}
-                className="bg-white border border-blue-200 hover:border-blue-500 text-blue-800 py-3 px-2 rounded-xl shadow hover:shadow-lg text-center transition-all flex items-center justify-center hover:scale-105 focus:ring-2 focus:ring-blue-300 outline-none text-base font-bold"
+                href={isNameEntered ? `/${cat.key}` : "#"}
+                className={`bg-white border border-blue-200 hover:border-blue-500 text-blue-800 py-3 px-2 rounded-xl shadow hover:shadow-lg text-center transition-all flex items-center justify-center hover:scale-105 focus:ring-2 focus:ring-blue-300 outline-none text-base font-bold
+                  ${!isNameEntered ? "opacity-50 pointer-events-none" : ""}`}
                 style={{ minWidth: 0 }}
               >
                 <span>{cat.label}</span>
