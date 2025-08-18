@@ -137,7 +137,7 @@ export default function QuizPage({ questions, category }) {
         id_mapel: mapelId
       });
     }
-    // eslint-disable-next-line
+   
   }, [showScore]);
 
   if (shuffledQuestions.length === 0) return <div>Loading...</div>;
