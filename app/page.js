@@ -113,6 +113,39 @@ export default function HomePage() {
     }
   };
 
+  // Fungsi untuk menyimpan hasil kuis ke database
+  async function saveResult({ score, total_questions, correct_answers, id_mapel }) {
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      alert("User belum login!");
+      return;
+    }
+
+    const { error } = await supabase
+      .from("result")
+      .insert([{
+        score,
+        total_questions,
+        correct_answers,
+        taken_at: new Date().toISOString(),
+        id_user: userId,
+        id_mapel
+      }]);
+
+    if (error) {
+      console.error("Gagal simpan hasil kuis:", error);
+      alert("Gagal menyimpan progress!");
+    }
+  }
+
+  // Contoh pemanggilan saveResult (panggil ini di event selesai kuis, bukan di dalam return)
+  // saveResult({
+  //   score: nilaiAkhir,
+  //   total_questions: jumlahSoal,
+  //   correct_answers: jumlahBenar,
+  //   id_mapel: 1
+  // });
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-100 via-white to-blue-200 font-sans">
       <Navbar />
@@ -176,7 +209,37 @@ export default function HomePage() {
             </div>
           )}
 
-          {/* Progress Section */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.7 }}
+            className="text-lg text-blue-700 mb-8 font-medium"
+          >
+            Pilih kategori kuis untuk mulai belajar:
+          </motion.p>
+
+          {/* Kategori Section */}
+          <motion.div
+            id="kategori"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.7 }}
+            className="grid gap-4 grid-cols-2 md:grid-cols-4 mb-4 justify-center"
+          >
+            {categories.map((cat) => (
+              <Link
+                key={cat.key}
+                href={isNameEntered ? `/${cat.key}` : "#"}
+                className={`bg-white border border-blue-200 hover:border-blue-500 text-blue-800 py-3 px-2 rounded-xl shadow hover:shadow-lg text-center transition-all flex items-center justify-center hover:scale-105 focus:ring-2 focus:ring-blue-300 outline-none text-base font-bold
+                  ${!isNameEntered ? "opacity-50 pointer-events-none" : ""}`}
+                style={{ minWidth: 0 }}
+              >
+                <span>{cat.label}</span>
+              </Link>
+            ))}
+          </motion.div>
+
+          {/* Progress Section - di bawah kategori */}
           {isNameEntered && (
             <div className="mb-8">
               <h3 className="text-lg font-bold text-blue-700 mb-2">Progress Anda:</h3>
@@ -193,36 +256,6 @@ export default function HomePage() {
               )}
             </div>
           )}
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.7 }}
-            className="text-lg text-blue-700 mb-8 font-medium"
-          >
-            Pilih kategori kuis untuk mulai belajar:
-          </motion.p>
-
-          {/* Kategori Section */}
-          <motion.div
-            id="kategori"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.7 }}
-            className="grid gap-4 grid-cols-2 md:grid-cols-4 mb-12 justify-center"
-          >
-            {categories.map((cat) => (
-              <Link
-                key={cat.key}
-                href={isNameEntered ? `/${cat.key}` : "#"}
-                className={`bg-white border border-blue-200 hover:border-blue-500 text-blue-800 py-3 px-2 rounded-xl shadow hover:shadow-lg text-center transition-all flex items-center justify-center hover:scale-105 focus:ring-2 focus:ring-blue-300 outline-none text-base font-bold
-                  ${!isNameEntered ? "opacity-50 pointer-events-none" : ""}`}
-                style={{ minWidth: 0 }}
-              >
-                <span>{cat.label}</span>
-              </Link>
-            ))}
-          </motion.div>
 
           {/* Tentang Section */}
           <motion.div
