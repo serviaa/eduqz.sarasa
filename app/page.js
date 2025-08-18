@@ -54,40 +54,35 @@ export default function HomePage() {
 
   // State untuk nama dan loading
   const [name, setName] = useState("");
-  const [isNameEntered, setIsNameEntered] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isNameEntered, setIsNameEntered] = useState(false);
 
-  // Handler submit nama
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  if (!name.trim()) {
-    alert("Nama wajib diisi");
-    return;
-  }
+    e.preventDefault();
 
-  setLoading(true);
-  try {
-    // kolom di DB = `nama`, nilai dari state = `name`
+    if (!name.trim()) {
+      alert("Nama wajib diisi");
+      return;
+    }
+
+    setLoading(true);
+
     const { data, error } = await supabase
       .from("users")
-      .insert([{ nama: name }])
-      .select("id_user, nama")      // ambil kolom yang diperlukan saja
+      .insert([{ nama: name }]) // kolom di DB = "nama"
+      .select()
       .single();
 
-    if (error) throw error;
+    setLoading(false);
 
-    // simpan id_user (sesuaikan dengan PK tabelmu)
-    localStorage.setItem("userId", String(data.id_user));
-    localStorage.setItem("nama", data.nama);
-    setIsNameEntered(true);
-  } catch (err) {
-    console.error("Supabase insert error:", err);
-    alert("Gagal menyimpan nama: " + (err?.message || err));
-  } finally {
-    setLoading(false); // pastikan loading selalu dimatikan
-  }
-};
-
+    if (error) {
+      console.error("Supabase Error:", error);
+      alert("Gagal menyimpan nama! Lihat console untuk detail.");
+    } else {
+      localStorage.setItem("userId", data.id_user); // pk di tabel kamu
+      setIsNameEntered(true);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-100 via-white to-blue-200 font-sans">
