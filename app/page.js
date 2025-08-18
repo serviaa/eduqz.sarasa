@@ -67,7 +67,7 @@ export default function HomePage() {
     setLoading(true);
     const { data, error } = await supabase
       .from("users")
-      .insert([{ name: name }]) // pastikan kolom di DB bernama "name"
+      .insert([{ nama: nama }]) // pastikan kolom di DB bernama "name"
       .select()
       .single();
 
