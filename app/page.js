@@ -53,9 +53,21 @@ export default function HomePage() {
   }, []);
 
   // State untuk nama dan loading
+
+  // State untuk nama dan loading
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const [isNameEntered, setIsNameEntered] = useState(false);
+
+  // Ambil nama dari localStorage saat komponen mount
+  React.useEffect(() => {
+    const savedName = localStorage.getItem("userName");
+    const savedUserId = localStorage.getItem("userId");
+    if (savedName && savedUserId) {
+      setName(savedName);
+      setIsNameEntered(true);
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -69,7 +81,7 @@ export default function HomePage() {
 
     const { data, error } = await supabase
       .from("users")
-      .insert([{ nama: name }]) // kolom di DB = "nama"
+      .insert([{ nama: name }])
       .select()
       .single();
 
@@ -80,6 +92,7 @@ export default function HomePage() {
       alert("Gagal menyimpan nama! Lihat console untuk detail.");
     } else {
       localStorage.setItem("userId", data.id_user); // pk di tabel kamu
+      localStorage.setItem("userName", name); // simpan nama juga
       setIsNameEntered(true);
     }
   };
