@@ -76,19 +76,19 @@ async function saveResult({ score, total_questions, correct_answers, id_mapel })
     return;
   }
   const { data, error } = await supabase
-  .from("result")
-  .insert([{
-    score,
-    total_questions,
-    correct_answers,
-    taken_at: new Date().toISOString(),
-    id_user: parseInt(userId, 10),
-    id_mapel
-  }])
-  .select();
+    .from("result")
+    .insert([{
+      score,
+      total_questions,
+      correct_answers,
+      taken_at: new Date().toISOString(),
+      id_user: parseInt(userId, 10),
+      id_mapel
+    }])
+    .select();
 
-console.log("Insert result:", { data, error });
-
+  console.log("Insert result:", { data, error });
+}
 
 export default function QuizPage({ questions, category }) {
   const [shuffledQuestions, setShuffledQuestions] = useState([]);
