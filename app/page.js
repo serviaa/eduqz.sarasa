@@ -34,12 +34,7 @@ const categories = [
   { key: 'matematika', label: 'MATH' },
   { key: 'english', label: 'ENGLISH' },
   { key: 'ipa', label: 'SCIENCE' },
-  { key: 'bahasa_indonesia', label: 'INDONESIA' },
-  { key: 'bahasa_jepang', label: 'JEPANG'},
-  { key: 'sejarah', label: 'HISTORY' },
-  { key: 'pancasila', label: 'PANCASILA' },
-  { key: 'bahasa_jawa', label: 'JAWA' },
-  { key: 'seni', label: 'SENI' },
+  { key: 'bahasa_indonesia', label: 'INDONESIA' }
 ];
 
 export default function HomePage() {
