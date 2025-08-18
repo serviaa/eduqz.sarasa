@@ -3,15 +3,15 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import confetti from 'canvas-confetti';
+import { supabase } from "@/lib/supabaseClient";
 
-// Navbar Component (smooth scroll + hash navigation)
+// Navbar Component
 function Navbar() {
   const router = useRouter();
 
   const handleScrollOrNavigate = (e, targetId) => {
     e.preventDefault();
     if (window.location.pathname === '/') {
-      // Sudah di halaman home → scroll
       const element = document.getElementById(targetId);
       if (element) {
         const navbarHeight = 80;
@@ -23,7 +23,6 @@ function Navbar() {
         });
       }
     } else {
-      // Masih di halaman lain → navigate ke home + hash
       router.push(`/#${targetId}`);
     }
   };
@@ -69,6 +68,29 @@ function shuffleArray(array) {
   return shuffled;
 }
 
+// Fungsi untuk simpan hasil kuis ke database
+async function saveResult({ score, total_questions, correct_answers, id_mapel }) {
+  const userId = localStorage.getItem("userId");
+  if (!userId) {
+    alert("User belum login!");
+    return;
+  }
+  const { error } = await supabase
+    .from("result")
+    .insert([{
+      score,
+      total_questions,
+      correct_answers,
+      taken_at: new Date().toISOString(),
+      id_user: userId,
+      id_mapel
+    }]);
+  if (error) {
+    console.error("Gagal simpan hasil kuis:", error);
+    alert("Gagal menyimpan progress!");
+  }
+}
+
 export default function QuizPage({ questions, category }) {
   const [shuffledQuestions, setShuffledQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -97,6 +119,27 @@ export default function QuizPage({ questions, category }) {
       return () => clearInterval(timer);
     }
   }, [showScore, startTime]);
+
+  // Simpan hasil kuis ke database saat kuis selesai
+  useEffect(() => {
+    if (showScore && shuffledQuestions.length > 0) {
+      // Mapping kategori ke id_mapel (ubah sesuai kebutuhan)
+      const mapelId = {
+        matematika: 1,
+        english: 2,
+        ipa: 3,
+        bahasa_indonesia: 4
+      }[category] || category;
+
+      saveResult({
+        score: score,
+        total_questions: shuffledQuestions.length,
+        correct_answers: correctCount,
+        id_mapel: mapelId
+      });
+    }
+    // eslint-disable-next-line
+  }, [showScore]);
 
   if (shuffledQuestions.length === 0) return <div>Loading...</div>;
 

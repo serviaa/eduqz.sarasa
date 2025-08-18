@@ -4,30 +4,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { supabase } from "@/lib/supabaseClient";
 
-// Navbar Component
-function Navbar() {
-  return (
-    <nav className="w-full sticky top-0 left-0 z-30 bg-white/80 backdrop-blur border-b border-neutral-200 shadow-sm py-3 px-6 flex items-center justify-between">
-      <Link href="/" className="text-xl font-bold text-blue-700 flex items-center gap-2">
-        <span className="text-2xl">📝</span> eduqz.sarasa
-      </Link>
-      <div className="flex items-center gap-6">
-        <a href="#" className="text-neutral-700 hover:text-blue-600 font-medium transition">Home</a>
-        <a href="#kategori" className="text-neutral-700 hover:text-blue-600 font-medium transition">Kategori</a>
-        <a href="#tentang" className="text-neutral-700 hover:text-blue-600 font-medium transition">Tentang</a>
-      </div>
-    </nav>
-  );
-}
-
-// Footer Component
-function Footer() {
-  return (
-    <footer className="w-full bg-white border-t border-neutral-200 py-4 px-6 text-center text-neutral-500 text-sm mt-12">
-      © {new Date().getFullYear()} eduqz.sarasa &middot; Dibuat dengan ❤️ untuk belajar
-    </footer>
-  );
-}
+// ...Navbar & Footer...
 
 const categories = [
   { key: 'matematika', label: 'MATH' },
@@ -112,45 +89,6 @@ export default function HomePage() {
       setIsNameEntered(true);
     }
   };
-
-  // Fungsi untuk menyimpan hasil kuis ke database
-    saveResult({
-      score: finalScore,
-      total_questions: questions.length,
-      correct_answer: correctCount,
-      id_mapel: selectedMapel, // ambil langsung dari dropdown
-    });
-
-    const saveResult = async ({ score, total_questions, correct_answers, id_mapel }) => {
-    const userId = localStorage.getItem("userId"); // ambil PK user dari localStorage
-
-    if (!userId) {
-      console.error("User ID tidak ditemukan di localStorage");
-      return;
-    }
-
-    const { data, error } = await supabase
-      .from("result")
-      .insert([
-        {
-          id_user: userId,
-          id_mapel: id_mapel,       // pastikan nilai ini ada
-          score: score,
-          total_question: total_questions,
-          correct_answer: correct_answers,
-          taken_at: new Date().toISOString(),
-        },
-      ])
-      .select()
-      .single();
-
-    if (error) {
-      console.error("Gagal insert result:", error);
-    } else {
-      console.log("Result berhasil disimpan:", data);
-    }
-  };
-
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-100 via-white to-blue-200 font-sans">
