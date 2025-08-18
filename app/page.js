@@ -59,27 +59,35 @@ export default function HomePage() {
 
   // Handler submit nama
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!name.trim()) {
-      alert("Nama wajib diisi");
-      return;
-    }
-    setLoading(true);
+  e.preventDefault();
+  if (!name.trim()) {
+    alert("Nama wajib diisi");
+    return;
+  }
+
+  setLoading(true);
+  try {
+    // kolom di DB = `nama`, nilai dari state = `name`
     const { data, error } = await supabase
       .from("users")
-      .insert([{ nama: nama }]) // pastikan kolom di DB bernama "name"
-      .select()
+      .insert([{ nama: name }])
+      .select("id_user, nama")      // ambil kolom yang diperlukan saja
       .single();
 
-    setLoading(false);
-    if (error) {
-      console.error(error);
-      alert("Gagal menyimpan nama!");
-    } else {
-      localStorage.setItem("userId", data.id_user); // ganti sesuai PK
-      setIsNameEntered(true);
-    }
-  };
+    if (error) throw error;
+
+    // simpan id_user (sesuaikan dengan PK tabelmu)
+    localStorage.setItem("userId", String(data.id_user));
+    localStorage.setItem("nama", data.nama);
+    setIsNameEntered(true);
+  } catch (err) {
+    console.error("Supabase insert error:", err);
+    alert("Gagal menyimpan nama: " + (err?.message || err));
+  } finally {
+    setLoading(false); // pastikan loading selalu dimatikan
+  }
+};
+
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-100 via-white to-blue-200 font-sans">
