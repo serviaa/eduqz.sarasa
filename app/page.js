@@ -114,37 +114,35 @@ export default function HomePage() {
   };
 
   // Fungsi untuk menyimpan hasil kuis ke database
-  async function saveResult({ score, total_questions, correct_answers, id_mapel }) {
-    const userId = localStorage.getItem("userId");
+    const saveResult = async ({ score, total_questions, correct_answers, id_mapel }) => {
+    const userId = localStorage.getItem("userId"); // ambil PK user dari localStorage
+
     if (!userId) {
-      alert("User belum login!");
+      console.error("User ID tidak ditemukan di localStorage");
       return;
     }
 
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from("result")
-      .insert([{
-        score,
-        total_questions,
-        correct_answers,
-        taken_at: new Date().toISOString(),
-        id_user: userId,
-        id_mapel
-      }]);
+      .insert([
+        {
+          id_user: userId,
+          id_mapel: id_mapel,       // pastikan nilai ini ada
+          score: score,
+          total_question: total_questions,
+          correct_answer: correct_answers,
+        },
+      ])
+      .select()
+      .single();
 
     if (error) {
-      console.error("Gagal simpan hasil kuis:", error);
-      alert("Gagal menyimpan progress!");
+      console.error("Gagal insert result:", error);
+    } else {
+      console.log("Result berhasil disimpan:", data);
     }
-  }
+  };
 
-  // Contoh pemanggilan saveResult (panggil ini di event selesai kuis, bukan di dalam return)
-  // saveResult({
-  //   score: nilaiAkhir,
-  //   total_questions: jumlahSoal,
-  //   correct_answers: jumlahBenar,
-  //   id_mapel: 1
-  // });
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-100 via-white to-blue-200 font-sans">
