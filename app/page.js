@@ -76,7 +76,7 @@ export default function HomePage() {
       console.error(error);
       alert("Gagal menyimpan nama!");
     } else {
-      localStorage.setItem("userId", data.id); // ganti sesuai PK
+      localStorage.setItem("userId", data.id_user); // ganti sesuai PK
       setIsNameEntered(true);
     }
   };
