@@ -53,11 +53,12 @@ export default function HomePage() {
   }, []);
 
   // State untuk nama dan loading
-
-  // State untuk nama dan loading
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const [isNameEntered, setIsNameEntered] = useState(false);
+
+  // State untuk progress
+  const [progress, setProgress] = useState([]);
 
   // Ambil nama dari localStorage saat komponen mount
   React.useEffect(() => {
@@ -68,6 +69,21 @@ export default function HomePage() {
       setIsNameEntered(true);
     }
   }, []);
+
+  // Ambil progress dari database saat user sudah login
+  React.useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      supabase
+        .from("result")
+        .select("*")
+        .eq("id_user", userId)
+        .order("taken_at", { ascending: false })
+        .then(({ data, error }) => {
+          if (!error && data) setProgress(data);
+        });
+    }
+  }, [isNameEntered]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -157,6 +173,24 @@ export default function HomePage() {
               <p className="mt-2 text-blue-700">
                 Silakan pilih kategori kuis di bawah ini 🚀
               </p>
+            </div>
+          )}
+
+          {/* Progress Section */}
+          {isNameEntered && (
+            <div className="mb-8">
+              <h3 className="text-lg font-bold text-blue-700 mb-2">Progress Anda:</h3>
+              {progress.length === 0 ? (
+                <p className="text-blue-600">Belum ada progress.</p>
+              ) : (
+                <ul className="text-blue-700 text-left mx-auto max-w-md space-y-2">
+                  {progress.map((item) => (
+                    <li key={item.id_result}>
+                      Mapel: {item.id_mapel} | Skor: {item.score} | Benar: {item.correct_answers}/{item.total_questions} | {new Date(item.taken_at).toLocaleString()}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           )}
 
