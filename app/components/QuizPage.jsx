@@ -75,21 +75,20 @@ async function saveResult({ score, total_questions, correct_answers, id_mapel })
     alert("User belum login!");
     return;
   }
-  const { error } = await supabase
-    .from("result")
-    .insert([{
-      score,
-      total_questions,
-      correct_answers,
-      taken_at: new Date().toISOString(),
-      id_user: userId,
-      id_mapel
-    }]);
-  if (error) {
-    console.error("Gagal simpan hasil kuis:", error);
-    alert("Gagal menyimpan progress!");
-  }
-}
+  const { data, error } = await supabase
+  .from("result")
+  .insert([{
+    score,
+    total_questions,
+    correct_answers,
+    taken_at: new Date().toISOString(),
+    id_user: parseInt(userId, 10),
+    id_mapel
+  }])
+  .select();
+
+console.log("Insert result:", { data, error });
+
 
 export default function QuizPage({ questions, category }) {
   const [shuffledQuestions, setShuffledQuestions] = useState([]);
