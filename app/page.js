@@ -97,16 +97,16 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.7 }}
-            className="grid gap-6 grid-cols-1 sm:grid-cols-3 mb-12"
-            style={{ scrollMarginTop: '100px' }}
+            className="grid gap-4 grid-cols-2 md:grid-cols-4 mb-12 justify-center"
           >
             {categories.map((cat) => (
               <Link
                 key={cat.key}
                 href={`/${cat.key}`}
-                className="bg-white border border-blue-200 hover:border-blue-500 text-blue-800 py-6 px-4 rounded-2xl shadow-lg hover:shadow-2xl text-center transition-all flex items-center justify-center hover:scale-105 focus:ring-2 focus:ring-blue-300 outline-none"
+                className="bg-white border border-blue-200 hover:border-blue-500 text-blue-800 py-3 px-2 rounded-xl shadow hover:shadow-lg text-center transition-all flex items-center justify-center hover:scale-105 focus:ring-2 focus:ring-blue-300 outline-none text-base font-bold"
+                style={{ minWidth: 0 }}
               >
-                <span className="text-xl font-bold tracking-wide">{cat.label}</span>
+                <span>{cat.label}</span>
               </Link>
             ))}
           </motion.div>
