@@ -114,6 +114,13 @@ export default function HomePage() {
   };
 
   // Fungsi untuk menyimpan hasil kuis ke database
+    saveResult({
+      score: finalScore,
+      total_questions: questions.length,
+      correct_answer: correctCount,
+      id_mapel: selectedMapel, // ambil langsung dari dropdown
+    });
+
     const saveResult = async ({ score, total_questions, correct_answers, id_mapel }) => {
     const userId = localStorage.getItem("userId"); // ambil PK user dari localStorage
 
@@ -131,6 +138,7 @@ export default function HomePage() {
           score: score,
           total_question: total_questions,
           correct_answer: correct_answers,
+          taken_at: new Date().toISOString(),
         },
       ])
       .select()
