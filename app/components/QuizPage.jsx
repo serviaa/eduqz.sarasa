@@ -71,10 +71,25 @@ function shuffleArray(array) {
 // Fungsi untuk simpan hasil kuis ke database
 async function saveResult({ score, total_questions, correct_answers, id_mapel }) {
   const userId = localStorage.getItem("userId");
+
   if (!userId) {
     alert("User belum login!");
+    console.error("❌ Tidak ada userId di localStorage");
     return;
   }
+
+  const parsedUserId = parseInt(userId, 10);
+  const parsedMapelId = parseInt(id_mapel, 10);
+
+  console.log("🔎 Akan menyimpan ke result:", {
+    score,
+    total_questions,
+    correct_answers,
+    taken_at: new Date().toISOString(),
+    id_user: parsedUserId,
+    id_mapel: parsedMapelId
+  });
+
   const { data, error } = await supabase
     .from("result")
     .insert([{
@@ -82,13 +97,18 @@ async function saveResult({ score, total_questions, correct_answers, id_mapel })
       total_questions,
       correct_answers,
       taken_at: new Date().toISOString(),
-      id_user: parseInt(userId, 10),
-      id_mapel
+      id_user: parsedUserId,
+      id_mapel: parsedMapelId
     }])
     .select();
 
-  console.log("Insert result:", { data, error });
+  if (error) {
+    console.error("❌ Gagal insert result:", error);
+  } else {
+    console.log("✅ Result berhasil disimpan:", data);
+  }
 }
+
 
 export default function QuizPage({ questions, category }) {
   const [shuffledQuestions, setShuffledQuestions] = useState([]);
@@ -120,15 +140,14 @@ export default function QuizPage({ questions, category }) {
   }, [showScore, startTime]);
 
   // Simpan hasil kuis ke database saat kuis selesai
-  useEffect(() => {
+    useEffect(() => {
     if (showScore && shuffledQuestions.length > 0) {
-      // Mapping kategori ke id_mapel (ubah sesuai kebutuhan)
       const mapelId = {
         matematika: 1,
         english: 2,
         ipa: 3,
         bahasa_indonesia: 4
-      }[category] || category;
+      }[category] || 0; // default 0 kalau tidak ditemukan
 
       saveResult({
         score: score,
@@ -137,7 +156,6 @@ export default function QuizPage({ questions, category }) {
         id_mapel: mapelId
       });
     }
-   
   }, [showScore]);
 
   if (shuffledQuestions.length === 0) return <div>Loading...</div>;
