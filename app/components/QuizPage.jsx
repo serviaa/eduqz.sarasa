@@ -68,55 +68,48 @@ function shuffleArray(array) {
   return shuffled;
 }
 
-// Helper mapping kategori -> id_mapel
-function getMapelId(category) {
-  const mapping = {
-    matematika: 1,
-    english: 2,
-    ipa: 3,
-    bahasa_indonesia: 4,
-  };
-  return mapping[category] || 0;
-}
-
 // Fungsi untuk simpan hasil kuis ke database
 async function saveResult({ score, total_questions, correct_answers, id_mapel }) {
-  const userId = localStorage.getItem("id_user"); // konsisten: pakai "id_user"
+  const userId = localStorage.getItem("userId");
 
   if (!userId) {
-    console.error("❌ User belum login, tidak bisa simpan result.");
-    alert("Silakan login terlebih dahulu sebelum mengerjakan kuis.");
+    alert("User belum login!");
+    console.error("❌ Tidak ada userId di localStorage");
     return;
   }
 
   const parsedUserId = parseInt(userId, 10);
   const parsedMapelId = parseInt(id_mapel, 10);
 
-  try {
-    const { data, error } = await supabase
-      .from("result")
-      .insert([{
-        score,
-        total_questions,
-        correct_answers,
-        taken_at: new Date().toISOString(),
-        id_user: parsedUserId,
-        id_mapel: parsedMapelId
-      }])
-      .select()
-      .single();
+  console.log("🔎 Akan menyimpan ke result:", {
+    score,
+    total_questions,
+    correct_answers,
+    taken_at: new Date().toISOString(),
+    id_user: parsedUserId,
+    id_mapel: parsedMapelId
+  });
 
-    if (error) throw error;
+  const { data, error } = await supabase
+    .from("result")
+    .insert([{
+      score,
+      total_questions,
+      correct_answers,
+      taken_at: new Date().toISOString(),
+      id_user: parsedUserId,
+      id_mapel: parsedMapelId
+    }])
+    .select();
 
+  if (error) {
+    console.error("❌ Gagal insert result:", error);
+  } else {
     console.log("✅ Result berhasil disimpan:", data);
-  } catch (err) {
-    console.error("❌ Gagal insert result:", err.message);
   }
 }
 
-// ===============================
-// Main Quiz Page
-// ===============================
+
 export default function QuizPage({ questions, category }) {
   const [shuffledQuestions, setShuffledQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -147,12 +140,17 @@ export default function QuizPage({ questions, category }) {
   }, [showScore, startTime]);
 
   // Simpan hasil kuis ke database saat kuis selesai
-  useEffect(() => {
+    useEffect(() => {
     if (showScore && shuffledQuestions.length > 0) {
-      const mapelId = getMapelId(category);
+      const mapelId = {
+        matematika: 1,
+        english: 2,
+        ipa: 3,
+        bahasa_indonesia: 4
+      }[category] || 0; // default 0 kalau tidak ditemukan
 
       saveResult({
-        score,
+        score: score,
         total_questions: shuffledQuestions.length,
         correct_answers: correctCount,
         id_mapel: mapelId
