@@ -1,15 +1,18 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import QuizPage from '../components/QuizPage';
 
-export default function CategoryPage({ params }) {
-  const { category } = params;
+export default function CategoryPage() {
+  const { category } = useParams(); // ✅ ambil params langsung di client
   const [questions, setQuestions] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    if (!category) return;
+
     setLoading(true);
     setError(null);
 

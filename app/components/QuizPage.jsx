@@ -5,6 +5,15 @@ import { useRouter } from 'next/navigation';
 import confetti from 'canvas-confetti';
 import { supabase } from "@/lib/supabaseClient";
 
+// ✅ Fungsi konversi UTC → WIB
+function formatToWIB(dateString) {
+  if (!dateString) return "-";
+  return new Date(dateString).toLocaleString("id-ID", {
+    timeZone: "Asia/Jakarta",
+    hour12: false
+  });
+}
+
 // Navbar Component
 function Navbar() {
   const router = useRouter();
@@ -28,19 +37,27 @@ function Navbar() {
   };
 
   return (
-    <nav className="w-full sticky top-0 left-0 z-30 bg-white/80 backdrop-blur border-b border-neutral-200 shadow-sm py-3 px-6 flex items-center justify-between">
-      <Link href="/" className="text-xl font-bold text-blue-700 flex items-center gap-2">
-        <span className="text-2xl">📝</span> eduqz.sarasa
+    <nav className="w-full sticky top-0 left-0 z-30 bg-white/90 backdrop-blur border-b border-gray-300 shadow-sm py-3 px-6 flex items-center justify-between">
+      <Link href="/" className="text-xl font-bold text-gray-900 flex items-center gap-2">
+        <span className="text-2xl"></span> Sarasa Learn ✨
       </Link>
       <div className="flex items-center gap-6">
-        <Link href="/" className="text-neutral-700 hover:text-blue-600 font-medium transition">Home</Link>
-        <Link href="/#kategori">
-          <span className="cursor-pointer">Kategori</span>
+        <Link
+          href="/"
+          className="text-gray-700 hover:text-black font-medium transition"
+        >
+          Home
         </Link>
         <a
+          href="/#kategori"
+          className="text-gray-700 hover:text-black font-medium transition cursor-pointer"
+        >
+          Kategori
+        </a>
+        <a
           href="/#tentang"
-          onClick={(e) => handleScrollOrNavigate(e, 'tentang')}
-          className="text-neutral-700 hover:text-blue-600 font-medium transition cursor-pointer"
+          onClick={(e) => handleScrollOrNavigate(e, "tentang")}
+          className="text-gray-700 hover:text-black font-medium transition cursor-pointer"
         >
           Tentang
         </a>
@@ -68,7 +85,7 @@ function shuffleArray(array) {
   return shuffled;
 }
 
-// Fungsi untuk simpan hasil kuis ke database
+// ✅ Fungsi simpan hasil kuis (UTC ke DB)
 async function saveResult({ score, total_questions, correct_answers, id_mapel }) {
   const userId = localStorage.getItem("userId");
 
@@ -85,7 +102,7 @@ async function saveResult({ score, total_questions, correct_answers, id_mapel })
     score,
     total_questions,
     correct_answers,
-    taken_at: new Date().toISOString(),
+    taken_at: new Date().toISOString(), // ✅ simpan sebagai UTC ISO
     id_user: parsedUserId,
     id_mapel: parsedMapelId
   });
@@ -96,7 +113,7 @@ async function saveResult({ score, total_questions, correct_answers, id_mapel })
       score,
       total_questions,
       correct_answers,
-      taken_at: new Date().toISOString(),
+      taken_at: new Date().toISOString(), // ✅ tetap UTC
       id_user: parsedUserId,
       id_mapel: parsedMapelId
     }])
@@ -108,7 +125,6 @@ async function saveResult({ score, total_questions, correct_answers, id_mapel })
     console.log("✅ Result berhasil disimpan:", data);
   }
 }
-
 
 export default function QuizPage({ questions, category }) {
   const [shuffledQuestions, setShuffledQuestions] = useState([]);
@@ -139,15 +155,15 @@ export default function QuizPage({ questions, category }) {
     }
   }, [showScore, startTime]);
 
-  // Simpan hasil kuis ke database saat kuis selesai
-    useEffect(() => {
+  // ✅ Simpan hasil kuis saat selesai
+  useEffect(() => {
     if (showScore && shuffledQuestions.length > 0) {
       const mapelId = {
         matematika: 1,
         english: 2,
         ipa: 3,
         bahasa_indonesia: 4
-      }[category] || 0; // default 0 kalau tidak ditemukan
+      }[category] || 0;
 
       saveResult({
         score: score,
@@ -223,57 +239,60 @@ export default function QuizPage({ questions, category }) {
   const current = shuffledQuestions[currentQuestion];
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-100 via-white to-blue-200 font-sans">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-100 via-white to-gray-200 font-sans text-gray-900">
       <Navbar />
       <main id="quiz" className="flex flex-1 items-center justify-center p-6 pt-24">
-        <div className="bg-white rounded-xl shadow-xl p-8 max-w-md w-full border border-gray-200">
-          <h1 className="text-2xl font-bold text-blue-700 mb-4 text-center flex justify-center items-center gap-2">
+        <div className="bg-white rounded-xl shadow-xl p-8 max-w-md w-full border border-gray-300">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4 text-center flex justify-center items-center gap-2">
             <span className="text-2xl">📝</span> {category.replace('-', ' ').toUpperCase()}
           </h1>
 
-          <div className="flex justify-between mb-2 text-sm text-blue-700 font-medium">
+          <div className="flex justify-between mb-2 text-sm text-gray-700 font-medium">
             <div>
               Soal {showScore ? shuffledQuestions.length : currentQuestion + 1} dari {shuffledQuestions.length}
-              {!showScore && <div className="text-blue-500 text-xs mt-1">Waktu: {formatTime(elapsed)}</div>}
+              {!showScore && <div className="text-gray-500 text-xs mt-1">Waktu: {formatTime(elapsed)}</div>}
             </div>
             <div className="text-right">Skor: {score}</div>
           </div>
 
-          <div className="w-full h-2 bg-blue-200 rounded-full overflow-hidden mb-6">
+          <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden mb-6">
             <div
-              className="h-2 bg-blue-700 rounded-full transition-all duration-500"
+              className="h-2 bg-gray-800 rounded-full transition-all duration-500"
               style={{ width: `${progressPercent}%` }}
             />
           </div>
 
           {showScore ? (
             <div className="text-center">
-              <p className="text-blue-800 font-semibold text-lg mb-4 flex justify-center items-center gap-2">
+              <p className="text-gray-800 font-semibold text-lg mb-4 flex justify-center items-center gap-2">
                 Kuis Selesai! <span>🎉</span>
               </p>
-              <div className="bg-blue-100 rounded-md py-6 mb-6">
-                <p className="text-3xl font-bold text-blue-800">{score}/{shuffledQuestions.length}</p>
-                <p className="text-blue-600">Skor Anda: {scorePercent}%</p>
+              <div className="bg-gray-100 rounded-md py-6 mb-6">
+                <p className="text-3xl font-bold text-gray-900">{score}/{shuffledQuestions.length}</p>
+                <p className="text-gray-600">Skor Anda: {scorePercent}%</p>
               </div>
-              <p className="mb-6 text-blue-700 font-semibold">
+              <p className="mb-2 text-gray-700 font-semibold">
                 Waktu pengerjaan: <span className="font-bold">{formatTime(elapsed)}</span>
+              </p>
+              <p className="mb-6 text-gray-700">
+                Diselesaikan pada: <span className="font-bold">{formatToWIB(new Date().toISOString())}</span> WIB
               </p>
               <button
                 onClick={ulangiKuis}
-                className="bg-blue-700 text-white rounded-md py-3 px-6 mb-3 w-full hover:bg-blue-800 transition"
+                className="bg-gray-800 text-white rounded-md py-3 px-6 mb-3 w-full hover:bg-black transition"
               >
                 Ulangi Kuis
               </button>
               <Link
                 href="/"
-                className="bg-blue-700 text-white rounded-md py-3 px-6 w-full block hover:bg-blue-800 transition text-center"
+                className="bg-gray-800 text-white rounded-md py-3 px-6 w-full block hover:bg-black transition text-center"
               >
                 Kembali ke Home
               </Link>
             </div>
           ) : (
             <>
-              <div className="mb-6 text-center text-blue-800 font-semibold text-lg">
+              <div className="mb-6 text-center text-gray-900 font-semibold text-lg">
                 {current.question}
               </div>
               <div key={currentQuestion} className="space-y-3 mb-6">
@@ -281,12 +300,12 @@ export default function QuizPage({ questions, category }) {
                   <label
                     key={opt}
                     className={`flex items-center gap-3 p-4 border rounded-full cursor-pointer transition-all
-                      ${selectedAnswer === opt ? 'bg-blue-50 border-blue-500 scale-105' : 'border-blue-200'}
-                      hover:bg-blue-50 hover:border-blue-400`}
+                      ${selectedAnswer === opt ? 'bg-gray-100 border-gray-600 scale-105' : 'border-gray-300'}
+                      hover:bg-gray-100 hover:border-gray-500`}
                   >
                     <span
                       className={`w-6 h-6 flex items-center justify-center rounded-full border-2
-                        ${selectedAnswer === opt ? 'border-blue-700 bg-blue-700' : 'border-blue-200 bg-white'}
+                        ${selectedAnswer === opt ? 'border-gray-900 bg-gray-900' : 'border-gray-300 bg-white'}
                         transition-all`}
                     >
                       {selectedAnswer === opt && (
@@ -301,7 +320,7 @@ export default function QuizPage({ questions, category }) {
                       onChange={() => setSelectedAnswer(opt)}
                       className="sr-only"
                     />
-                    <span className="text-blue-800">{opt}</span>
+                    <span className="text-gray-800">{opt}</span>
                   </label>
                 ))}
               </div>
@@ -315,10 +334,10 @@ export default function QuizPage({ questions, category }) {
                   >
                     {selectedAnswer === current.correct ? 'Benar!' : 'Salah'}
                   </p>
-                  <p className="mb-6 text-blue-700">{current.explanation}</p>
+                  <p className="mb-6 text-gray-700">{current.explanation}</p>
                   <button
                     onClick={handleNext}
-                    className="bg-blue-700 text-white py-3 px-6 rounded-md hover:bg-blue-800 transition"
+                    className="bg-gray-800 text-white py-3 px-6 rounded-md hover:bg-black transition"
                   >
                     Soal Selanjutnya
                   </button>
@@ -328,7 +347,7 @@ export default function QuizPage({ questions, category }) {
               {!showExplanation && !showScore && (
                 <button
                   onClick={handleAnswer}
-                  className="bg-blue-700 text-white py-3 px-6 rounded-md w-full hover:bg-blue-800 transition font-semibold"
+                  className="bg-gray-800 text-white py-3 px-6 rounded-md w-full hover:bg-black transition font-semibold"
                 >
                   Jawab
                 </button>

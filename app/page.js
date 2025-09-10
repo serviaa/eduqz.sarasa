@@ -7,14 +7,14 @@ import { supabase } from "@/lib/supabaseClient";
 // ---------------- Navbar ----------------
 function Navbar() {
   return (
-    <nav className="fixed top-0 left-0 w-full bg-white/90 backdrop-blur border-b border-blue-200 z-50 shadow-sm">
+    <nav className="fixed top-0 left-0 w-full bg-white/90 backdrop-blur border-b border-gray-300 z-50 shadow-sm">
       <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-        <Link href="/" className="text-xl font-bold text-blue-700">
+        <Link href="/" className="text-xl font-bold text-gray-900">
           Sarasa Learn ✨
         </Link>
         <div className="flex gap-6">
-          <a href="#kategori" className="text-blue-600 hover:text-blue-800">Kategori</a>
-          <a href="#tentang" className="text-blue-600 hover:text-blue-800">Tentang</a>
+          <a href="#kategori" className="text-gray-700 hover:text-black">Kategori</a>
+          <a href="#tentang" className="text-gray-700 hover:text-black">Tentang</a>
         </div>
       </div>
     </nav>
@@ -24,8 +24,8 @@ function Navbar() {
 // ---------------- Footer ----------------
 function Footer() {
   return (
-    <footer className="bg-white/90 border-t border-blue-200 text-center py-4 mt-10">
-      <p className="text-blue-600 text-sm">
+    <footer className="bg-white/90 border-t border-gray-300 text-center py-4 mt-10">
+      <p className="text-gray-600 text-sm">
         © {new Date().getFullYear()} Sarasa Learn. Dibuat dengan ❤️ untuk belajar.
       </p>
     </footer>
@@ -39,6 +39,14 @@ const categories = [
   { key: 'ipa', label: 'SCIENCE' },
   { key: 'bahasa_indonesia', label: 'INDONESIA' }
 ];
+
+// ---------------- Mapel Mapping ----------------
+const mapelNames = {
+  1: "Matematika",
+  2: "English",
+  3: "IPA",
+  4: "Bahasa Indonesia"
+};
 
 // ---------------- HomePage ----------------
 export default function HomePage() {
@@ -111,8 +119,16 @@ export default function HomePage() {
     }
   };
 
+  // Format WIB
+  function formatToWIB(dateString) {
+    return new Date(dateString).toLocaleString("id-ID", {
+      timeZone: "Asia/Jakarta",
+      hour12: false
+    });
+  }
+
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-100 via-white to-blue-200 font-sans">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-100 via-white to-gray-200 font-sans text-gray-900">
       <Navbar />
       <main className="flex flex-1 flex-col items-center justify-center p-6 pt-24">
         <div className="w-full max-w-3xl mx-auto text-center">
@@ -120,9 +136,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
-            className="text-4xl md:text-5xl font-bold text-blue-700 mb-6 flex items-center justify-center gap-2"
-          >
-            Sarasa Learn <span className="text-5xl">✨</span>
+            className="text-4xl md:text-5xl font-bold text-black mb-6 flex items-center justify-center gap-2">
           </motion.h1>
 
           {/* QUOTE */}
@@ -130,14 +144,12 @@ export default function HomePage() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.7 }}
-            className="bg-white/80 border border-blue-200 rounded-xl shadow-lg px-8 py-6 mb-8 max-w-2xl mx-auto text-center relative"
+            className="bg-white/80 border border-gray-300 rounded-xl shadow-lg px-8 py-6 mb-8 max-w-2xl mx-auto text-center relative"
           >
-            <blockquote className="text-blue-800 italic text-lg md:text-xl leading-relaxed relative">
-              <span className="text-3xl text-blue-400 font-serif absolute left-0 -top-2 select-none">“</span>
+            <blockquote className="text-gray-800 italic text-lg md:text-xl leading-relaxed relative">
               Hanya pendidikan yang bisa menyelamatkan masa depan, tanpa pendidikan Indonesia tak mungkin bertahan.
-              <span className="text-3xl text-blue-400 font-serif absolute right-0 -bottom-2 select-none">”</span>
             </blockquote>
-            <footer className="mt-6 text-right text-blue-600 font-semibold">
+            <footer className="mt-6 text-right text-gray-600 font-semibold">
               – Najwa Shihab
             </footer>
           </motion.figure>
@@ -148,18 +160,18 @@ export default function HomePage() {
               onSubmit={handleSubmit}
               className="bg-white p-6 rounded-2xl shadow-md w-full max-w-sm mx-auto mb-8"
             >
-              <h1 className="text-xl font-bold mb-4">Masukkan Nama Anda</h1>
+              <h1 className="text-xl font-bold mb-4 text-gray-800">Masukkan Nama Anda</h1>
               <input
                 type="text"
                 placeholder="Nama lengkap"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="border w-full p-2 rounded-lg mb-4"
+                className="border border-gray-400 w-full p-2 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-gray-500"
                 disabled={loading}
               />
               <button
                 type="submit"
-                className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg"
+                className="w-full bg-gray-800 hover:bg-black text-white font-semibold py-2 px-4 rounded-lg"
                 disabled={loading}
               >
                 {loading ? "Menyimpan..." : "Mulai"}
@@ -167,8 +179,8 @@ export default function HomePage() {
             </form>
           ) : (
             <div className="text-center mb-8">
-              <h2 className="text-2xl font-semibold">Halo, {name}!</h2>
-              <p className="mt-2 text-blue-700">
+              <h2 className="text-2xl font-semibold text-black">Halo, {name}!</h2>
+              <p className="mt-2 text-gray-700">
                 Silakan pilih kategori kuis di bawah ini 🚀
               </p>
             </div>
@@ -179,7 +191,7 @@ export default function HomePage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.7 }}
-            className="text-lg text-blue-700 mb-8 font-medium"
+            className="text-lg text-gray-800 mb-8 font-medium"
           >
             Pilih kategori kuis untuk mulai belajar:
           </motion.p>
@@ -195,7 +207,7 @@ export default function HomePage() {
               <Link
                 key={cat.key}
                 href={isNameEntered ? `/${cat.key}` : "#"}
-                className={`bg-white border border-blue-200 hover:border-blue-500 text-blue-800 py-3 px-2 rounded-xl shadow hover:shadow-lg text-center transition-all flex items-center justify-center hover:scale-105 focus:ring-2 focus:ring-blue-300 outline-none text-base font-bold
+                className={`bg-white border border-gray-300 hover:border-black text-gray-800 py-3 px-2 rounded-xl shadow hover:shadow-lg text-center transition-all flex items-center justify-center hover:scale-105 focus:ring-2 focus:ring-gray-400 outline-none text-base font-bold
                   ${!isNameEntered ? "opacity-50 pointer-events-none" : ""}`}
               >
                 <span>{cat.label}</span>
@@ -206,14 +218,17 @@ export default function HomePage() {
           {/* Progress */}
           {isNameEntered && (
             <div className="mb-8">
-              <h3 className="text-lg font-bold text-blue-700 mb-2">Progress Anda:</h3>
+              <h3 className="text-lg font-bold text-gray-900 mb-2">Progress Anda:</h3>
               {progress.length === 0 ? (
-                <p className="text-blue-600">Belum ada progress.</p>
+                <p className="text-gray-600">Belum ada progress.</p>
               ) : (
-                <ul className="text-blue-700 text-left mx-auto max-w-md space-y-2">
+                <ul className="text-gray-800 text-left mx-auto max-w-md space-y-2">
                   {progress.map((item) => (
-                    <li key={item.id_result}>
-                      Mapel: {item.id_mapel} | Skor: {item.score} | Benar: {item.correct_answers}/{item.total_questions} | {new Date(item.taken_at).toLocaleString()}
+                    <li key={item.id_result} className="border-b border-gray-300 pb-1">
+                      <span className="font-semibold">{mapelNames[item.id_mapel] || "Mapel Tidak Dikenal"}</span> | 
+                      Skor: {item.score} | 
+                      Benar: {item.correct_answers}/{item.total_questions} | 
+                      <span className="text-gray-600">{formatToWIB(item.taken_at)}</span>
                     </li>
                   ))}
                 </ul>
@@ -227,13 +242,13 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.7 }}
-            className="bg-white/90 border border-blue-100 rounded-xl p-6 shadow text-center max-w-xl mx-auto"
+            className="bg-white/90 border border-gray-200 rounded-xl p-6 shadow text-center max-w-xl mx-auto"
             style={{ scrollMarginTop: '100px' }}
           >
-            <h2 className="text-xl font-bold text-blue-700 mb-4">
+            <h2 className="text-xl font-bold text-black mb-4">
               Kenapa belajar di sini?
             </h2>
-            <ul className="list-disc list-inside text-blue-700 text-left mx-auto max-w-md space-y-2">
+            <ul className="list-disc list-inside text-gray-800 text-left mx-auto max-w-md space-y-2">
               <li>Penjelasan setiap jawaban sehingga mudah dipahami</li>
               <li>Tampilan menarik dan mudah digunakan</li>
               <li>Belajar jadi lebih seru dan menyenangkan!</li>
